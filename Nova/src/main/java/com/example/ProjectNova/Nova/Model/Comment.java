@@ -1,19 +1,29 @@
 package com.example.ProjectNova.Nova.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
 
 public class Comment {
     /// Class to wrap each comment in
-    String userId;
-    String id;
-    String content;
-    List<String> replies;
-    boolean isReply;
-    private Date TimeStamp;
+    private String userId;
+    private String id;
+    private String content;
+    private List<String> replies;
+    private boolean isReply;
+    private Date timeStamp;
 
+    public Comment(@JsonProperty("id")String id,@JsonProperty("userId")String userId, @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies, @JsonProperty("isReply")boolean isReply,@JsonProperty("timeStamp") Date timeStamp) {
+        this.userId = userId!=null?userId:this.userId;
+        this.id = id!=null?id:this.id;
+        this.content = content!=null?content:this.content;
+        this.replies = replies!=null?replies:this.replies;
+        this.isReply = isReply;
+        this.timeStamp = timeStamp!=null?timeStamp:this.timeStamp;
+    }
 
-/////////////Getters and setters////////////////////////////////////////////////////////////////////////
+    /////////////Getters and setters////////////////////////////////////////////////////////////////////////
     public String getUserId() {
         return userId;
     }
@@ -55,10 +65,10 @@ public class Comment {
     }
 
     public Date getTimeStamp() {
-        return TimeStamp;
+        return timeStamp;
     }
 
     public void setTimeStamp(Date timeStamp) {
-        TimeStamp = timeStamp;
+        this.timeStamp = timeStamp;
     }
 }

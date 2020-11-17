@@ -1,13 +1,22 @@
 package com.example.ProjectNova.Nova.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 public class ReadList {
     //essentially a wrapper for a list of articles
-    String id;
-    List<String> articles;
-    String name;
-/////////////Getters and setters////////////////////////////////////////////////////////////////////////
+    private String id;
+    private List<String> articles;
+    private String name;
+
+    public ReadList(@JsonProperty("id")String id, @JsonProperty("articles")List<String> articles,@JsonProperty("name") String name) {
+        this.id = id!=null?id:this.id;
+        this.articles = articles!=null?articles:this.articles;
+        this.name = name!=null?name:this.name;
+    }
+
+    /////////////Getters and setters////////////////////////////////////////////////////////////////////////
     public String getId() {
         return id;
     }

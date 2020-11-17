@@ -1,5 +1,7 @@
 package com.example.ProjectNova.Nova.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +18,20 @@ public class Article {
     private List<String> comments;
     private int viewCount;
     private Date timestamp;
+
+    public Article(@JsonProperty("id")String id, @JsonProperty("authorId")String authorId,@JsonProperty("thumbnailId") String thumbnailId,@JsonProperty("title") String title, @JsonProperty("mainContent")String mainContent,@JsonProperty("sources") String sources, @JsonProperty("info")String info,
+                   @JsonProperty("comments") List<String> comments,@JsonProperty("viewCount") int viewCount, @JsonProperty("timeStamp")Date timestamp) {
+        this.id = id!=null?id:this.id;
+        this.authorId = authorId!=null?authorId:this.authorId;
+        this.thumbnailId = thumbnailId!=null?thumbnailId:this.thumbnailId;
+        this.title = title!=null?title:this.title;
+        this.mainContent = mainContent!=null?mainContent:this.mainContent;
+        this.sources = sources!=null?sources:this.sources;
+        this.info = info!=null?info:this.info;
+        this.comments = comments!=null?comments:this.comments;
+        this.viewCount = viewCount!=0?viewCount:this.viewCount;
+        this.timestamp = timestamp!=null?timestamp:this.timestamp;
+    }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
     public String getId() {
