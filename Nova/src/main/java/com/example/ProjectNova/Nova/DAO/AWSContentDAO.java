@@ -1,9 +1,12 @@
 package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Model.Article;
+import com.example.ProjectNova.Nova.Model.ArticleInfo;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.ReadList;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
@@ -23,12 +26,27 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
+    public ArticleInfo createArticleInfo(String articleId, String info) {
+        return null;
+    }
+
+    @Override
     public Article getArticleById(String articleId) {
         return null;
     }
 
     @Override
     public Article getArticleById(String UserId, String articleId) {
+        return null;
+    }
+    @Override
+    public ReadList getReadListById(String UserId, String readListId) {
+        return null;
+    }
+
+
+    @Override
+    public ArticleInfo getArticleInfo(String articleId) {
         return null;
     }
 
@@ -39,6 +57,11 @@ public class AWSContentDAO implements ContentDAO {
 
     @Override
     public void updateReadList(ReadList readList) {
+
+    }
+
+    @Override
+    public void updateArticleInfo(String articleId, String info) {
 
     }
 
@@ -65,5 +88,10 @@ public class AWSContentDAO implements ContentDAO {
     @Override
     public void deleteComment(Article id, String commentId) {
 
+    }
+
+    @Override
+    public List<Comment> getArticleComments(String articleId) {
+        return null;
     }
 }

@@ -1,8 +1,11 @@
 package com.example.ProjectNova.Nova.DAO;
 
+import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.User;
 import com.example.ProjectNova.Nova.Model.UserContent;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository("UserDao")
 public class AWSUserDAO implements UserDAO{
@@ -27,8 +30,8 @@ public class AWSUserDAO implements UserDAO{
     }
 
     @Override
-    public boolean isAuthorized(String userId, String password) {
-        return false;
+    public String getPassword(String userId) {
+        return null;
     }
 
     @Override
@@ -39,5 +42,17 @@ public class AWSUserDAO implements UserDAO{
     @Override
     public void deleteUser(String id) {
 
+    }
+    public boolean usernameExists(String name){
+        return false;
+    }
+
+    @Override
+    public List<Article> getReadLater(String userId) {
+        return null;
+    }
+
+    public List<Article> getUserHistory(String userId) {
+        return null;
     }
 }

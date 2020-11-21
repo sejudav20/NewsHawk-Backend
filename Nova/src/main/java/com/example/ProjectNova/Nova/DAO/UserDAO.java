@@ -1,7 +1,10 @@
 package com.example.ProjectNova.Nova.DAO;
 
+import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.User;
 import com.example.ProjectNova.Nova.Model.UserContent;
+
+import java.util.List;
 
 public interface UserDAO {
     ////This class will have the methods to get data on user activities such as favorites,settings and sign in
@@ -14,10 +17,14 @@ public interface UserDAO {
     //Read
     public User getUserById(String id);
     public UserContent getUserContentByUserId(String userId);
-    public boolean isAuthorized(String userId, String password);
+    public String getPassword(String userId);
+    public List<Article> getUserHistory(String userId);
 
     //Update
     public void updateUser(User user);
     //Delete
     public void deleteUser(String id);
+    public boolean usernameExists(String name);
+
+    List<Article> getReadLater(String userId);
 }
