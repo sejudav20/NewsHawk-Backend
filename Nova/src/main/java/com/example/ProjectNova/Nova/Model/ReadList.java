@@ -10,7 +10,7 @@ public class ReadList {
     private List<String> articles;
     private String name;
 
-    public ReadList(@JsonProperty("id")String id, @JsonProperty("articles")List<String> articles,@JsonProperty("name") String name) {
+    public ReadList(@JsonProperty("id")String id,@JsonProperty("name") String name, @JsonProperty("articles")List<String> articles) {
         this.id = id!=null?id:this.id;
         this.articles = articles!=null?articles:this.articles;
         this.name = name!=null?name:this.name;

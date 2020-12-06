@@ -15,9 +15,9 @@ public interface UserDAO {
     public UserContent createUserContent(UserContent userContent);
 
     //Read
-    public User getUserById(String id);
-    public UserContent getUserContentByUserId(String userId);
-    public String getPassword(String userId);
+    public User getUser(String name);
+    public UserContent getUserContent(String user);
+    public String getPassword(String username);
     public List<Article> getUserHistory(String userId);
 
     //Update

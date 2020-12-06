@@ -6,10 +6,7 @@ import com.example.ProjectNova.Nova.DAO.ContentDAO;
 import com.example.ProjectNova.Nova.DAO.UserDAO;
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
-import com.example.ProjectNova.Nova.Model.Article;
-import com.example.ProjectNova.Nova.Model.Comment;
-import com.example.ProjectNova.Nova.Model.ReadList;
-import com.example.ProjectNova.Nova.Model.User;
+import com.example.ProjectNova.Nova.Model.*;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +34,8 @@ public class UserService {
         return cDao.getArticleComments(articleId);
     }
 
-    public Article getArticleById(String article) {
-        return cDao.getArticleById(article);
+    public Article getArticle(String article,String author) {
+        return cDao.getArticle(article,author);
     }
     public List<Article> getUserHistory(String userId){
         return uDao.getUserHistory(userId);
@@ -48,11 +45,14 @@ public class UserService {
     }
     public User createUser(User user) {
         String id = IdService.getId();
-        User newUser = new User(id, user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(IdService.getId(),
-                new ArrayList<String>(), "Article History"), new ReadList(IdService.getId(), new ArrayList<String>(), "History"), new ReadList(IdService.getId(), new ArrayList<String>(), "Liked"),
+        User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(user.getName(),"Read Later",
+                new ArrayList<String>()), new ReadList(user.getName(), "History",new ArrayList<String>() ), new ReadList(user.getName(),"Liked", new ArrayList<String>() ),
                 new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
 
         return uDao.createUser(newUser);
+    }
+    public UserContent getUserContent(String name){
+        return uDao.getUserContent(name);
     }
 
     public User createUser(String name, String password) throws UsernameAlreadyExistException {
@@ -60,8 +60,7 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        User newUser = new User(id, name, password, id, null, new ReadList(IdService.getId(),
-                new ArrayList<String>(), "Article History"), new ReadList(IdService.getId(), new ArrayList<String>(), "History"), new ReadList(IdService.getId(), new ArrayList<String>(), "Liked"),
+        User newUser = new User(name, password, id, null,  new ReadList(name, "Read Later",new ArrayList<String>()), new ReadList(name, "History",new ArrayList<String>() ),new ReadList(name, "Liked",new ArrayList<String>()),
                 new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
         return uDao.createUser(newUser);
     }
@@ -74,13 +73,13 @@ public class UserService {
         uDao.deleteUser(id);
     }
 
-    public User getUserById(String userId) {
-        return uDao.getUserById(userId);
+    public User getUserbyName(String name) {
+        return uDao.getUser(name);
     }
 
     public User authenticateUser(String userId, String password) throws AuthenticationException {
         if (uDao.getPassword(userId).equals(password)) {
-            return getUserById(userId);
+            return getUserbyName(userId);
         } else {
             throw new AuthenticationException();
         }

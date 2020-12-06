@@ -5,7 +5,6 @@ import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.ReadList;
-import com.example.ProjectNova.Nova.Model.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -23,30 +22,29 @@ public class CreatorService {
     }
 
     public Article createArticle(Article article) {
-        Article newArticle = new Article(IdService.getId(), article.getAuthorId(), article.getThumbnailId(),
-                article.getTitle(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), IdService.getTimeStamp());
+        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(),
+                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), IdService.getTimeStamp(),article.getIconId());
         return cDao.createArticle(newArticle);
     }
 
     public void updateArticle(Article article) {
-        Article newArticle = new Article(article.getId(), article.getAuthorId(), article.getThumbnailId(),
-                article.getTitle(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getTimestamp());
-        cDao.updateArticle(article.getId(), newArticle);
+        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getTimestamp(),article.getIconId());
+        cDao.updateArticle(newArticle);
     }
     public List<Comment> getArticleComments(String articleId){
         return cDao.getArticleComments(articleId);
     }
 
-    public Article getArticleById(String article) {
-        return cDao.getArticleById(article);
+    public Article getArticleByName(String name,String author) {
+        return cDao.getArticle(name,author);
     }
 
-    public void deleteArticle(String id) {
-        cDao.deleteArticle(id);
+    public void deleteArticle(String name,String author) {
+        cDao.deleteArticle(name,author);
     }
 
-    public ReadList createReadList(String name,List<String> ids){
-        return cDao.createReadList(IdService.getId(),new ReadList(IdService.getId(),ids,name));
+    public ReadList createReadList(String author,String name,List<String> ids){
+        return cDao.createReadList(IdService.getId(),new ReadList(author,name,ids));
     }
     public ReadList getReadList(String userId,String readListId){
         return cDao.getReadListById(userId,readListId);

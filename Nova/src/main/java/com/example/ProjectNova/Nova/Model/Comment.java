@@ -14,7 +14,7 @@ public class Comment {
     private boolean isReply;
     private Date timeStamp;
 
-    public Comment(@JsonProperty("id")String id,@JsonProperty("userId")String userId, @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies, @JsonProperty("isReply")boolean isReply,@JsonProperty("timeStamp") Date timeStamp) {
+    public Comment(@JsonProperty("id")String id,@JsonProperty("userId")String userId, @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies, @JsonProperty("isReply")boolean isReply,@JsonProperty("userIconId") String userIconId,@JsonProperty("timeStamp") Date timeStamp) {
         this.userId = userId!=null?userId:this.userId;
         this.id = id!=null?id:this.id;
         this.content = content!=null?content:this.content;

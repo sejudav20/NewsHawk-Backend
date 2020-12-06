@@ -20,12 +20,12 @@ public class AWSUserDAO implements UserDAO{
     }
 
     @Override
-    public User getUserById(String id) {
+    public User getUser(String id) {
         return null;
     }
 
     @Override
-    public UserContent getUserContentByUserId(String userId) {
+    public UserContent getUserContent(String userId) {
         return null;
     }
 

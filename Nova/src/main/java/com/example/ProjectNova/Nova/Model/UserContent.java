@@ -6,7 +6,7 @@ import java.util.List;
 
 public class UserContent {
     //contains data on articles and overall channel stats
- private String id;
+ private String name;
  private List<String> articles;
  private int followers;
  private String userId;
@@ -14,8 +14,8 @@ public class UserContent {
  private int channelViews;
  private double percentFollowers;
 
- public UserContent(@JsonProperty("id")String id,@JsonProperty("articles") List<String> articles, @JsonProperty("followers")int followers,@JsonProperty("userId") String userId,@JsonProperty("readLists") List<ReadList> readLists, @JsonProperty("channelViews")int channelViews,@JsonProperty("percentFollowers") double percentFollowers) {
-  this.id = id!=null?id:this.id;
+ public UserContent(@JsonProperty("name")String name,@JsonProperty("articles") List<String> articles, @JsonProperty("followers")int followers,@JsonProperty("userId") String userId,@JsonProperty("readLists") List<ReadList> readLists, @JsonProperty("channelViews")int channelViews,@JsonProperty("percentFollowers") double percentFollowers) {
+  this.name = this.name !=null? this.name :this.name;
   this.articles = articles!=null?articles:this.articles;
   this.followers = followers!=0?followers:this.followers;
   this.userId = userId!=null?userId:this.userId;
@@ -25,12 +25,12 @@ public class UserContent {
  }
 
  /////////////Getters and setters////////////////////////////////////////////////////////////////////////
- public String getId() {
-  return id;
+ public String getName() {
+  return name;
  }
 
- public void setId(String id) {
-  this.id = id;
+ public void setName(String name) {
+  this.name = name;
  }
  public List<String> getArticles() {
   return articles;

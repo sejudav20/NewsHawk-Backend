@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 import java.util.List;
 
-public class User {
+public class User implements Cloneable{
     //Stores data on each user such as sign in and settings
-    private String id;
+    //private String id;
     private String name;
     private String password;
     private String contentId;
@@ -21,13 +21,13 @@ public class User {
     public User(){
 
     }
-    public User(@JsonProperty("id")String id,@JsonProperty("name") String name,@JsonProperty("password") String password,
+    public User(@JsonProperty("name") String name,@JsonProperty("password") String password,
                 @JsonProperty("contentId") String contentId,@JsonProperty("profilePic") String profilePic,
                 @JsonProperty("articleHistory")ReadList articleHistory,@JsonProperty("readLater") ReadList readLater,
                 @JsonProperty("liked")ReadList liked,@JsonProperty("disliked") List<String> disliked,
                 @JsonProperty("following")List<String> following, @JsonProperty("timeStamp") Date timeStamp) {
 
-        this.id = id!=null?id:this.id;
+
         this.name = name!=null?name:this.name;
         this.password = password!=null?password:this.password;
         this.contentId = contentId!=null?contentId:this.contentId;
@@ -41,14 +41,9 @@ public class User {
     }
 
     ////////////////Getters and setters////////////////////////////////////////////////////////////////////////
-    public String getId() {
-        return id;
+    public User clone() throws CloneNotSupportedException {
+        return (User) super.clone();
     }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getName() {
         return name;
     }

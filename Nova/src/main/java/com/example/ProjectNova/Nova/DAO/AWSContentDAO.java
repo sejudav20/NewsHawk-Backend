@@ -10,6 +10,7 @@ import java.util.List;
 
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
+
     @Override
     public Article createArticle(Article article) {
         return null;
@@ -21,7 +22,7 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public Comment createComment(String articleId, Comment coment) {
+    public Comment createComment(Comment comment) {
         return null;
     }
 
@@ -31,27 +32,17 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public Article getArticleById(String articleId) {
+    public Article getArticle(String articleName,String author) {
         return null;
     }
 
     @Override
-    public Article getArticleById(String UserId, String articleId) {
-        return null;
-    }
-    @Override
-    public ReadList getReadListById(String UserId, String readListId) {
-        return null;
-    }
-
-
-    @Override
-    public ArticleInfo getArticleInfo(String articleId) {
+    public ReadList getReadListById(String userId, String name) {
         return null;
     }
 
     @Override
-    public void updateArticle(String id, Article article) {
+    public void updateArticle(Article article) {
 
     }
 
@@ -71,12 +62,12 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public void updateComment(Article id, Comment comment) {
+    public void updateComment(Article name, String articleAuthor, Comment comment) {
 
     }
 
     @Override
-    public void deleteArticle(String id) {
+    public void deleteArticle(String name, String author) {
 
     }
 
