@@ -42,7 +42,7 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public void updateArticle(Article article) {
+    public void updateArticle(String author, String originalName, Article article) {
 
     }
 
@@ -84,5 +84,22 @@ public class AWSContentDAO implements ContentDAO {
     @Override
     public List<Comment> getArticleComments(String articleId) {
         return null;
+    }
+
+    public void addArticleToReadList(String author, String name, List<String> articleName, List<String> ids) {
+    }
+
+    @Override
+    public void removeArticleFromReadlist(String userName, String name, List<String> articleName, List<String> authorName) {
+
+    }
+
+    @Override
+    public void deleteReadList(String userName, String name) {
+
+    }
+
+
+    public void addSub(String author) {
     }
 }

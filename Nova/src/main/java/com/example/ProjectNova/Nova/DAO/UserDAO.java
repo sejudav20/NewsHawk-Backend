@@ -27,4 +27,10 @@ public interface UserDAO {
     public boolean usernameExists(String name);
 
     List<Article> getReadLater(String userId);
+
+    void addSub(String username, String author);
+
+    void addLiked(String username, String author, String articleName);
+
+    void addFollow(String username, String author);
 }

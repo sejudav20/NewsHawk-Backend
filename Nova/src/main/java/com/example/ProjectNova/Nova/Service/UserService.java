@@ -86,4 +86,19 @@ public class UserService {
     }
 
 
+    public void likeAnArticle(String username, String author, String articleName) {
+        uDao.addLiked(username,author,articleName);
+        cDao.addLike(author,articleName);
+
+    }
+
+    public void subscribe(String username, String author) {
+        uDao.addSub(username,author);
+        cDao.addSub(author);
+    }
+
+    public void follow(String username, String author) {
+        uDao.addFollow(username,author);
+        cDao.addFollow(author);
+    }
 }

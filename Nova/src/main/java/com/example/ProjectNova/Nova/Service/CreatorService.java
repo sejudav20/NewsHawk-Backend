@@ -27,9 +27,9 @@ public class CreatorService {
         return cDao.createArticle(newArticle);
     }
 
-    public void updateArticle(Article article) {
+    public void updateArticle(String author, String originalName, Article article) {
         Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getTimestamp(),article.getIconId());
-        cDao.updateArticle(newArticle);
+        cDao.updateArticle(author,originalName,newArticle);
     }
     public List<Comment> getArticleComments(String articleId){
         return cDao.getArticleComments(articleId);
@@ -46,9 +46,18 @@ public class CreatorService {
     public ReadList createReadList(String author,String name,List<String> ids){
         return cDao.createReadList(IdService.getId(),new ReadList(author,name,ids));
     }
+    public void addArticleToReadlist(String author, String name, List<String> articleName, List<String> articleAuthor){
+        cDao.addArticleToReadList(author,name,articleName,articleAuthor);
+    }
     public ReadList getReadList(String userId,String readListId){
         return cDao.getReadListById(userId,readListId);
     }
 
 
+    public void removeArticleFromReadlist(String userName, String name, List<String> articleName, List<String> authorName) {
+
+    }
+
+    public void deleteReadList(String userName, String name) {
+    }
 }
