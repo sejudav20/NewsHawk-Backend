@@ -6,23 +6,26 @@ import java.util.List;
 
 public class ReadList {
     //essentially a wrapper for a list of articles
-    private String id;
+   //sort key
+    private String author;
     private List<String> articles;
+    //primary key
     private String name;
 
-    public ReadList(@JsonProperty("id")String id,@JsonProperty("name") String name, @JsonProperty("articles")List<String> articles) {
-        this.id = id!=null?id:this.id;
+    public ReadList(@JsonProperty("author")String author,@JsonProperty("name") String name,
+                    @JsonProperty("articles")List<String> articles) {
+        this.author = author!=null?author:this.author;
         this.articles = articles!=null?articles:this.articles;
         this.name = name!=null?name:this.name;
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
-    public String getId() {
-        return id;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public List<String> getArticles() {

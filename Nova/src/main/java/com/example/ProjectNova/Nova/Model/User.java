@@ -8,6 +8,7 @@ import java.util.List;
 public class User implements Cloneable{
     //Stores data on each user such as sign in and settings
     //private String id;
+   //primary key
     private String name;
     private String password;
     private String contentId;
@@ -17,6 +18,7 @@ public class User implements Cloneable{
     private ReadList liked;
     private List<String> disliked;
     private List<String> following;
+    private List<String> subscribed;
     private Date timeStamp;
     public User(){
 
@@ -25,7 +27,8 @@ public class User implements Cloneable{
                 @JsonProperty("contentId") String contentId,@JsonProperty("profilePic") String profilePic,
                 @JsonProperty("articleHistory")ReadList articleHistory,@JsonProperty("readLater") ReadList readLater,
                 @JsonProperty("liked")ReadList liked,@JsonProperty("disliked") List<String> disliked,
-                @JsonProperty("following")List<String> following, @JsonProperty("timeStamp") Date timeStamp) {
+                @JsonProperty("following")List<String> following,@JsonProperty("subscribed")List<String> subscribed,
+                @JsonProperty("timeStamp") Date timeStamp) {
 
 
         this.name = name!=null?name:this.name;
@@ -37,6 +40,7 @@ public class User implements Cloneable{
         this.liked = liked!=null?liked:this.liked;
         this.disliked = disliked!=null?disliked:this.disliked;
         this.following = following!=null?following:this.following;
+        this.subscribed = subscribed!=null?subscribed:this.subscribed;
         this.timeStamp = timeStamp!=null?timeStamp:this.timeStamp;
     }
 

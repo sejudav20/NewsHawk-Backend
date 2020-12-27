@@ -1,6 +1,7 @@
 package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Model.Article;
+import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.User;
 import com.example.ProjectNova.Nova.Model.UserContent;
 
@@ -33,4 +34,14 @@ public interface UserDAO {
     void addLiked(String username, String author, String articleName);
 
     void addFollow(String username, String author);
+
+    void updateUserContent(UserContent userContent);
+
+    void createComment(String articleId, Comment comment);
+
+    void updateComment(String articleId, Comment comment);
+
+    void deleteComment(String articleId, String user, String timestamp);
+
+    void getComment(String articleId, String user, String timestamp);
 }

@@ -2,18 +2,21 @@ package com.example.ProjectNova.Nova.API;
 
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
-import com.example.ProjectNova.Nova.Model.Article;
-import com.example.ProjectNova.Nova.Model.ReadList;
-import com.example.ProjectNova.Nova.Model.User;
-import com.example.ProjectNova.Nova.Model.UserContent;
+import com.example.ProjectNova.Nova.Model.*;
 import com.example.ProjectNova.Nova.Service.CreatorService;
 import com.example.ProjectNova.Nova.Service.PhotoStorageService;
 import com.example.ProjectNova.Nova.Service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*", allowedHeaders = "*")
@@ -67,6 +70,13 @@ public class MainController {
     public UserContent getUserContent(@PathVariable("name") String name) {
         return userS.getUserContent(name);
     }
+    @PostMapping(path = "/updateUserContent")
+    public void updateUserContent(@RequestBody UserContent userContent) {
+
+        userS.updateUserContent(userContent);
+    }
+
+
 
     @GetMapping(path = "/getUser/{name}")
     public User getUser(@PathVariable("name") String name) {
@@ -82,64 +92,114 @@ public class MainController {
     }
 
     ///ReadList editing//////////////////////////////////////////////////////
-    public ReadList createReadList(String userName, String name) {
-        return creatorS.createReadList(userName, name, new ArrayList<String>());
+    @PostMapping(path = "/createReadList/{userName}/{name}")
+    public void createReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
+        creatorS.createReadList(userName, name, new ArrayList<String>());
     }
 
-    public void addToReadList(String userName, String name, List<String> articleName, List<String> authorName) {
+    @PostMapping(path = "/addToReadList/{userName}/{name}")
+    public void addToReadList(@PathVariable("username")String userName, @PathVariable("name")String name, @RequestBody()List<List<String>> articleNameAuthor) {
+        ArrayList<String> articleName=new ArrayList();
+        ArrayList<String> authorName=new ArrayList();
+        for( List<String> list:articleNameAuthor){
+            articleName.add(list.get(0));
+            authorName.add(list.get(1));
+        }
         creatorS.addArticleToReadlist(userName, name, articleName, authorName);
     }
-
-    public void removeFromReadList(String userName, String name, List<String> articleName, List<String> authorName) {
+    @PostMapping(path = "/removeFromReadList/{userName}/{name}")
+    public void removeFromReadList(@PathVariable("username")String userName, @PathVariable("name")String name,@RequestBody List<List<String>> articleNameAuthor) {
+        ArrayList<String> articleName=new ArrayList();
+        ArrayList<String> authorName=new ArrayList();
+        for( List<String> list:articleNameAuthor){
+            articleName.add(list.get(0));
+            authorName.add(list.get(1));
+        }
         creatorS.removeArticleFromReadlist(userName, name, articleName, authorName);
     }
-
-    public void deleteReadList(String userName, String name) {
+    @DeleteMapping(path = "/deleteReadList/{userName}/{name}")
+    public void deleteReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
         creatorS.deleteReadList(userName, name);
     }
 
     //Article Creation
-
-    public void createArticle(Article article) {
+    @PostMapping(path = "/createArticle")
+    public void createArticle(@RequestBody Article article) {
         creatorS.createArticle(article);
     }
 
-    public void createArticle(Article article, File thumbnail,String thumbnailType) {
-        creatorS.createArticle(article);
-        photoS.addArticleThumbnail(article.getAuthor(),article.getTitle(),thumbnail,thumbnailType);
+    @PostMapping(path="/addArticleImages/{author}/{name}")
+    public void addArticleImages(@PathVariable("author")String author,@PathVariable("name")String name,@RequestParam("images") MultipartFile[] images) {
+
+        try {
+            photoS.addArticleImages(author,name,images);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
-    public void createArticle(Article article, File thumbnail,String thumbnailType ,List<File> images) {
-        creatorS.createArticle(article);
-        photoS.addArticleThumbnail(article.getAuthor(),article.getTitle(),thumbnail,thumbnailType);
-
+    @PostMapping(path="/setArticleThumbnail/{author}/{name}")
+    public void setArticleThumbnail(@PathVariable("author")String author,@PathVariable("name")String name,@RequestParam("Thumbnail") MultipartFile thumbnail) {
+        try {
+            photoS.addArticleThumbnail(author,name,thumbnail);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setArticleThumbnail(String author,String name,File thumbnail,String thumbnailType) {
-        photoS.addArticleThumbnail(author,name,thumbnail,thumbnailType);
-    }
-
-
-    public File getArticleThumbNail(String author,String name) {
+    @GetMapping(path="/getArticleThumbnail/{author}/{name}"
+    )
+    public @ResponseBody File getArticleThumbNail(@PathVariable("author")String author,@PathVariable("name")String name) throws IOException {
         return photoS.getArticleThumbnail(author,name);
     }
-    public void deleteArticle(String author,String name){
+    @DeleteMapping(path="/deleteArticle/{author}/{name}")
+    public void deleteArticle(@PathVariable("author")String author,@PathVariable("name")String name){
         creatorS.deleteArticle(author,name);
         photoS.deleteAllImagesForArticle(author,name);
     }
-    public void updateArticle(String author,String originalName,Article newArticle){
+    @PostMapping(path="/updateArticle/{author}/{originalName}")
+    public void updateArticle(@PathVariable("author")String author,@PathVariable("originalName")String originalName,@RequestBody Article newArticle){
         creatorS.updateArticle(author,originalName,newArticle);
     }
 
-    ///Basic operations////////////////
-    public void likeAnArticle(String username,String author,String articleName){
+    @PostMapping(path="/addLike/{username}/{author}/{name}")
+    public void likeAnArticle(@PathVariable("username")String username,
+                              @PathVariable("author")String author,@PathVariable("name")String articleName){
         userS.likeAnArticle(username,author,articleName);
     }
-    public void subscribe(String username,String author){
+
+/////Comments//////////////////////////////////////////////////////
+
+
+    @GetMapping(path="/getArticleComments/{articleId}")
+    public List<Comment> getArticleComments(@PathVariable("articleId")String articleId){
+        return creatorS.getArticleComments(articleId);
+    }
+    @PostMapping(path="/createComment/{articleId}")
+    public void createComment(@PathVariable("articleId")String articleId,@RequestBody Comment comment){
+        userS.createComment(articleId,comment);
+    }
+    @PostMapping(path="/updateComment/{articleId}/{user}/{timestamp}")
+    public void updateComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp,@RequestBody Comment comment){
+        userS.updateComment(articleId,comment);
+    }
+    @PostMapping(path="/deleteComment/{articleId}/{user}/{timestamp}")
+    public void deleteComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp){
+        userS.deleteComment(articleId,user,timestamp);
+    }
+    @PostMapping(path="/getComment/{articleId}/{user}/{timestamp}")
+    public void getComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp){
+        userS.getComment(articleId,user,timestamp);
+    }
+    ///Basic operations////////////////
+
+    @PostMapping(path="/addSubscribe/{username}/{author}")
+    public void subscribe(@PathVariable("username")String username,@PathVariable("author")String author){
         userS.subscribe(username,author);
     }
-
-    public void follow(String username,String author){
+    @PostMapping(path="/addSubscribe/{username}/{author}")
+    public void follow(@PathVariable("username")String username,@PathVariable("author")String author){
         userS.follow(username,author);
     }
 

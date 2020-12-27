@@ -4,12 +4,17 @@ import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.ArticleInfo;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.ReadList;
+import com.example.ProjectNova.Nova.Service.AWSInitializer;
 import org.springframework.stereotype.Repository;
+import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
 import java.util.List;
 
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
+    public DynamoDbClient getDynamo(){
+        return new AWSInitializer().getClient();
+    }
 
     @Override
     public Article createArticle(Article article) {
@@ -84,6 +89,16 @@ public class AWSContentDAO implements ContentDAO {
     @Override
     public List<Comment> getArticleComments(String articleId) {
         return null;
+    }
+
+    @Override
+    public void addLike(String author, String articleName) {
+
+    }
+
+    @Override
+    public void addFollow(String author) {
+
     }
 
     public void addArticleToReadList(String author, String name, List<String> articleName, List<String> ids) {

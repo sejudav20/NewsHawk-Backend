@@ -9,8 +9,11 @@ import java.util.Map;
 public class Article {
     //This class stores each individual article
  //   private String id;
+
+    //sort key
     private String author;
     private String thumbnailId;
+    //primary key
     private String title;
     private String mainContent;
     private String sources;
@@ -21,8 +24,11 @@ public class Article {
     private Date timestamp;
     private String iconId;
 
-    public Article(@JsonProperty("title") String title,@JsonProperty("author")String author,@JsonProperty("thumbnailId") String thumbnailId, @JsonProperty("mainContent")String mainContent,@JsonProperty("sources") String sources, @JsonProperty("info") Map<String,Object> info,
-                   @JsonProperty("comments") List<String> comments,@JsonProperty("viewCount") int viewCount, @JsonProperty("timeStamp")Date timestamp,@JsonProperty("channelIcon")String iconId) {
+    public Article(@JsonProperty("title") String title,@JsonProperty("author")String author,@JsonProperty("thumbnailId")
+            String thumbnailId, @JsonProperty("mainContent")String mainContent,@JsonProperty("sources") String sources,
+                   @JsonProperty("info") Map<String,Object> info, @JsonProperty("comments") List<String> comments,
+                   @JsonProperty("viewCount") int viewCount, @JsonProperty("timeStamp")Date timestamp,
+                   @JsonProperty("channelIcon")String iconId) {
         //this.id = id!=null?id:this.id;
         this.author = author!=null? this.author :this.author;
         this.thumbnailId = thumbnailId!=null?thumbnailId:this.thumbnailId;

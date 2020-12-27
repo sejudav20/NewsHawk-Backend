@@ -6,21 +6,30 @@ import java.util.List;
 
 public class UserContent {
     //contains data on articles and overall channel stats
+ //primary key
  private String name;
  private List<String> articles;
  private int followers;
  private String userId;
  private List<ReadList> readLists;
  private int channelViews;
+ private int subscribers;
  private double percentFollowers;
 
- public UserContent(@JsonProperty("name")String name,@JsonProperty("articles") List<String> articles, @JsonProperty("followers")int followers,@JsonProperty("userId") String userId,@JsonProperty("readLists") List<ReadList> readLists, @JsonProperty("channelViews")int channelViews,@JsonProperty("percentFollowers") double percentFollowers) {
+
+ public UserContent(@JsonProperty("name")String name,@JsonProperty("articles") List<String> articles,
+                    @JsonProperty("followers")int followers,@JsonProperty("subscribers")int subscribers,
+                    @JsonProperty("userId") String userId, @JsonProperty("readLists") List<ReadList> readLists,
+                    @JsonProperty("channelViews")int channelViews,@JsonProperty("percentFollowers") double percentFollowers) {
+
+
   this.name = this.name !=null? this.name :this.name;
   this.articles = articles!=null?articles:this.articles;
   this.followers = followers!=0?followers:this.followers;
   this.userId = userId!=null?userId:this.userId;
   this.readLists = readLists!=null?readLists:this.readLists;
   this.channelViews = channelViews!=0?channelViews:this.channelViews;
+  this.subscribers= subscribers!=0?subscribers:this.subscribers;
   this.percentFollowers = percentFollowers!=0?percentFollowers:this.percentFollowers;
  }
 

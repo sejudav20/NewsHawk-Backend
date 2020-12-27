@@ -47,7 +47,7 @@ public class UserService {
         String id = IdService.getId();
         User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(user.getName(),"Read Later",
                 new ArrayList<String>()), new ReadList(user.getName(), "History",new ArrayList<String>() ), new ReadList(user.getName(),"Liked", new ArrayList<String>() ),
-                new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
+                new ArrayList<String>(),new ArrayList<String>() ,new ArrayList<String>(), IdService.getTimeStamp());
 
         return uDao.createUser(newUser);
     }
@@ -61,7 +61,7 @@ public class UserService {
             throw new UsernameAlreadyExistException();
         }
         User newUser = new User(name, password, id, null,  new ReadList(name, "Read Later",new ArrayList<String>()), new ReadList(name, "History",new ArrayList<String>() ),new ReadList(name, "Liked",new ArrayList<String>()),
-                new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
+                new ArrayList<String>(), new ArrayList<String>(),new ArrayList<String>(), IdService.getTimeStamp());
         return uDao.createUser(newUser);
     }
 
@@ -100,5 +100,25 @@ public class UserService {
     public void follow(String username, String author) {
         uDao.addFollow(username,author);
         cDao.addFollow(author);
+    }
+
+    public void updateUserContent(UserContent userContent) {
+        uDao.updateUserContent(userContent);
+    }
+
+    public void createComment(String articleId, Comment comment) {
+        uDao.createComment(articleId,comment);
+    }
+
+    public void updateComment(String articleId, Comment comment) {
+        uDao.updateComment(articleId,comment);
+    }
+
+    public void deleteComment(String articleId, String user, String timestamp) {
+        uDao.deleteComment(articleId,user,timestamp);
+    }
+
+    public void getComment(String articleId, String user, String timestamp) {
+        uDao.getComment(articleId,user,timestamp);
     }
 }

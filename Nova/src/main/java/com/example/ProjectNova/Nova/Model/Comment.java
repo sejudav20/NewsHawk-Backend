@@ -7,16 +7,23 @@ import java.util.List;
 
 public class Comment {
     /// Class to wrap each comment in
-    private String userId;
+
+    //sortkey
+    private String username;
+    //Primary key  id= articleName+" "+author
     private String id;
     private String content;
     private List<String> replies;
     private boolean isReply;
+    //sortkey
     private Date timeStamp;
 
-    public Comment(@JsonProperty("id")String id,@JsonProperty("userId")String userId, @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies, @JsonProperty("isReply")boolean isReply,@JsonProperty("userIconId") String userIconId,@JsonProperty("timeStamp") Date timeStamp) {
-        this.userId = userId!=null?userId:this.userId;
-        this.id = id!=null?id:this.id;
+    public Comment(@JsonProperty("username")String username,@JsonProperty("articleId")String articleId,
+                   @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies,
+                   @JsonProperty("isReply")boolean isReply,@JsonProperty("userIconId") String userIconId,
+                   @JsonProperty("timeStamp") Date timeStamp) {
+        this.username = username!=null?username:this.username;
+        this.id = articleId!=null?articleId:this.id;
         this.content = content!=null?content:this.content;
         this.replies = replies!=null?replies:this.replies;
         this.isReply = isReply;
@@ -24,12 +31,12 @@ public class Comment {
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getId() {

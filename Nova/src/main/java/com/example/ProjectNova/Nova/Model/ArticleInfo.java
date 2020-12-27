@@ -4,7 +4,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+///This class may not be necessary
 public class ArticleInfo {
     static public String PARAMETER_SEPARATOR = "(͡°͜ʖ͡°)";
     static public String ITEM_SEPARATOR = "/\\/\\/\\/";

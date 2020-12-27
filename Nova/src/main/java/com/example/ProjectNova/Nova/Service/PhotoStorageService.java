@@ -1,12 +1,13 @@
 package com.example.ProjectNova.Nova.Service;
 
 import com.example.ProjectNova.Nova.DAO.AWSPhotoDAO;
-import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
+import org.apache.tika.Tika;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
-import java.nio.file.Files;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -38,11 +39,23 @@ public class PhotoStorageService {
     }
 
 
-    public void addArticleThumbnail(String author, String title, File thumbnail,String type) {
-        uploadFile(author+"/"+title+"/Thumbnail."+type,thumbnail);
+    public void addArticleThumbnail(String author, String title, MultipartFile thumbnail) throws IOException {
+        Tika tika=new Tika();
+        File th = new File("src/main/resources/"+thumbnail.getOriginalFilename());
+        uploadFile(author+"/"+title+"/Thumbnail."+tika.detect(th),th);
+        th.delete();
     }
 
     public void deleteAllImagesForArticle(String author, String name) {
         photoDAO.deleteAllImagesFromPath(author+"/"+name);
+    }
+
+    public void addArticleImages(String author, String articleName, MultipartFile[] images) throws IOException {
+        for(MultipartFile m:images){
+            Tika tika=new Tika();
+            File th = new File("src/main/resources/"+m.getOriginalFilename());
+            uploadFile(author+"/"+articleName+"/"+m.getOriginalFilename(),th);
+            th.delete();
+        }
     }
 }
