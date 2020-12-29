@@ -11,7 +11,10 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 import software.amazon.awssdk.services.dynamodb.waiters.DynamoDbWaiter;
 
+import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
@@ -136,20 +139,111 @@ public class AWSContentDAO implements ContentDAO {
         }
     }
 
+    public HashMap<String,AttributeValue> hashArticle(Article article){
+        HashMap<String,AttributeValue> itemValues = new HashMap<String,AttributeValue>();
+        itemValues.put("author", AttributeValue.builder().s(article.getAuthor()).build());
+        itemValues.put("title", AttributeValue.builder().s(article.getTitle()).build());
+        itemValues.put("thumbnailId", AttributeValue.builder().s(article.getThumbnailId()).build());
+        itemValues.put("mainContent", AttributeValue.builder().s(article.getMainContent()).build());
+        itemValues.put("sources", AttributeValue.builder().s(article.getSources()).build());
+        itemValues.put("info", AttributeValue.builder().m(article.getInfoAsMap()).build());
+        itemValues.put("viewCount", AttributeValue.builder().n(String.valueOf(article.getViewCount())).build());
+        itemValues.put("timestamp", AttributeValue.builder().s(String.valueOf(article.getTimestamp().getTime())).build());
+
+        return itemValues;
+    }
+    public HashMap<String,AttributeValue> hashReadList(ReadList readList){
+        HashMap<String,AttributeValue> itemValues = new HashMap<String,AttributeValue>();
+        itemValues.put("name", AttributeValue.builder().s(readList.getName()).build());
+        itemValues.put("author", AttributeValue.builder().s(readList.getAuthor()).build());
+        itemValues.put("articles", AttributeValue.builder().ns(readList.getArticles()).build());
+        return itemValues;
+    }
+    public HashMap<String,AttributeValue> hashComments(Comment c){
+        HashMap<String,AttributeValue> itemValues = new HashMap<String,AttributeValue>();
+        itemValues.put("id", AttributeValue.builder().s(c.getId()).build());
+        itemValues.put("username", AttributeValue.builder().s(c.getUsername()).build());
+        itemValues.put("content", AttributeValue.builder().s(c.getContent()).build());
+        itemValues.put("content", AttributeValue.builder().ns(c.getReplies()).build());
+        itemValues.put("timestamp", AttributeValue.builder().s(String.valueOf(c.getTimeStamp().getTime())).build());
+
+        return itemValues;
+    }
+    public Map<String, Object> getInfoAsMap(Map<String,AttributeValue> info) {
+        HashMap<String, Object> itemValues = new HashMap();
+
+        for (String s : info.keySet()) {
+            AttributeValue o = info.get(s);
+
+                itemValues.put(s,o.s());
+
+            if (o.hasNs()) {
+                itemValues.put(s,o.ns());
+            }
+
+        }
+        return itemValues;
+    }
+
+//    public Article hashOutArticle(Map<String,AttributeValue> r){
+//
+//       Article a= new Article(r.get("title").s(),r.get("author").s(),r.get("thumbnailId").s(),r.get("mainContent").s(),r.get("sources").s(),r.get("info").m(),null,
+//              Integer.valueOf(r.get("viewcount").n()), Date.valueOf(r.get("timestamp").n()),r.get("channelIcon").s());
+//
+//        return  a;
+//    }
 
     @Override
     public Article createArticle(Article article) {
-        return null;
+
+        HashMap<String,AttributeValue> art=hashArticle(article);
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName("Articles")
+                .item(art)
+                .build();
+
+        DynamoDbClient client=getDynamo();
+        try {
+            client.putItem(request);
+        }catch(ResourceNotFoundException r){
+            createArticleTable();
+            createArticle(article);
+        }
+        return article;
     }
 
     @Override
     public ReadList createReadList(String userId, ReadList readList) {
-        return null;
+        HashMap<String,AttributeValue> r=hashReadList(readList);
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName("ReadLists")
+                .item(r)
+                .build();
+        DynamoDbClient client=getDynamo();
+        try {
+            client.putItem(request);
+        }catch(ResourceNotFoundException ex){
+            createReadlistTable();
+            createReadList(userId,readList);
+        }
+        return readList;
     }
 
     @Override
     public Comment createComment(Comment comment) {
-        return null;
+        HashMap<String,AttributeValue> c=hashComments(comment);
+        PutItemRequest request = PutItemRequest.builder()
+                .tableName("Comments")
+                .item(c)
+                .build();
+        DynamoDbClient client=getDynamo();
+        try {
+            client.putItem(request);
+        }catch(ResourceNotFoundException ex){
+            createCommentsTable();
+            createComment(comment);
+        }
+        return comment;
     }
 
     @Override
@@ -159,6 +253,7 @@ public class AWSContentDAO implements ContentDAO {
 
     @Override
     public Article getArticle(String articleName, String author) {
+
         return null;
     }
 

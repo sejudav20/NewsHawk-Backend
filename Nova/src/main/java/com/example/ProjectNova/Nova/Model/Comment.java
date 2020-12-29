@@ -1,10 +1,13 @@
 package com.example.ProjectNova.Nova.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 import java.util.Date;
 import java.util.List;
-
+@DynamoDbBean
 public class Comment {
     /// Class to wrap each comment in
 
@@ -31,6 +34,7 @@ public class Comment {
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
+
     public String getUsername() {
         return username;
     }
@@ -38,7 +42,7 @@ public class Comment {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    @DynamoDbPartitionKey
     public String getId() {
         return id;
     }
@@ -70,7 +74,7 @@ public class Comment {
     public void setReply(boolean reply) {
         isReply = reply;
     }
-
+    @DynamoDbSortKey
     public Date getTimeStamp() {
         return timeStamp;
     }

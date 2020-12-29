@@ -1,9 +1,11 @@
 package com.example.ProjectNova.Nova.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.List;
-
+@DynamoDbBean
 public class UserContent {
     //contains data on articles and overall channel stats
  //primary key
@@ -34,6 +36,7 @@ public class UserContent {
  }
 
  /////////////Getters and setters////////////////////////////////////////////////////////////////////////
+ @DynamoDbPartitionKey
  public String getName() {
   return name;
  }

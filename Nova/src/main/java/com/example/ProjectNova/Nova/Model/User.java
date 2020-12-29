@@ -1,10 +1,12 @@
 package com.example.ProjectNova.Nova.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.Date;
 import java.util.List;
-
+@DynamoDbBean
 public class User implements Cloneable{
     //Stores data on each user such as sign in and settings
     //private String id;
@@ -48,6 +50,7 @@ public class User implements Cloneable{
     public User clone() throws CloneNotSupportedException {
         return (User) super.clone();
     }
+    @DynamoDbPartitionKey
     public String getName() {
         return name;
     }

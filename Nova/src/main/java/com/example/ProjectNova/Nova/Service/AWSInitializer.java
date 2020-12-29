@@ -2,8 +2,10 @@ package com.example.ProjectNova.Nova.Service;
 
 import org.springframework.stereotype.Service;
 
+import software.amazon.awssdk.enhanced.dynamodb.DynamoDbEnhancedClient;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
+;
 
 
 import javax.annotation.PostConstruct;
@@ -13,21 +15,32 @@ import java.net.URI;
 @Service
 public class AWSInitializer {
     private static DynamoDbClient client;
+    private static DynamoDbEnhancedClient enhancedClient;
 
     @PostConstruct
-    public void startAws(){
+    public void startAws() {
 //       Region region=Region.US_WEST_2;
 //        client = DynamoDbClient.builder()
 //                .region(region)
 //                .build();
 
-   client = DynamoDbClient.builder()
+        client = DynamoDbClient.builder()
                 .region(Region.US_WEST_2)
                 .endpointOverride(URI.create("http://localhost:8000"))
                 .build();
-   
+
+      enhancedClient=DynamoDbEnhancedClient.builder()
+                .dynamoDbClient(client)
+                .build();
     }
-    public static DynamoDbClient getClient(){
+
+    public static DynamoDbClient getClient() {
         return client;
+    }
+
+    public static DynamoDbEnhancedClient getEnhancedClient()
+
+    {
+        return enhancedClient;
     }
 }
