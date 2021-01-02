@@ -2,6 +2,7 @@ package com.example.ProjectNova.Nova.Service;
 
 import com.example.ProjectNova.Nova.DAO.AWSContentDAO;
 import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
+import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.ReadList;
@@ -21,14 +22,14 @@ public class CreatorService {
         this.cDao = aWSContentDAO;
     }
 
-    public Article createArticle(Article article) {
+    public Article createArticle(Article article) throws CreationException {
         Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(),
-                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), IdService.getTimeStamp(),article.getIconId());
+                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(),IdService.getTimeStamp(),article.getIconId());
         return cDao.createArticle(newArticle);
     }
 
     public void updateArticle(String author, String originalName, Article article) {
-        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getTimestamp(),article.getIconId());
+        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), article.getTimestamp(),article.getIconId());
         cDao.updateArticle(author,originalName,newArticle);
     }
     public List<Comment> getArticleComments(String articleId){
@@ -43,8 +44,8 @@ public class CreatorService {
         cDao.deleteArticle(name,author);
     }
 
-    public ReadList createReadList(String author,String name,List<String> ids){
-        return cDao.createReadList(IdService.getId(),new ReadList(author,name,ids));
+    public ReadList createReadList(String author,String name,List<String> ids,List<String> authors){
+        return cDao.createReadList(IdService.getId(),new ReadList(author,name,ids,authors));
     }
     public void addArticleToReadlist(String author, String name, List<String> articleName, List<String> articleAuthor){
         cDao.addArticleToReadList(author,name,articleName,articleAuthor);

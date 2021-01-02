@@ -1,5 +1,6 @@
 package com.example.ProjectNova.Nova.DAO;
 
+import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.ArticleInfo;
 import com.example.ProjectNova.Nova.Model.Comment;
@@ -11,7 +12,7 @@ public interface ContentDAO {
     //This will contain methods to store data on channels and the articles on each channel
 
     //Create
-    public Article createArticle(Article article);
+    public Article createArticle(Article article) throws CreationException;
     public ReadList createReadList(String userId,ReadList readList);
     public Comment createComment(Comment comment);
     public ArticleInfo createArticleInfo(String articleId, String info);
@@ -36,7 +37,7 @@ public interface ContentDAO {
 
     List<Comment> getArticleComments(String articleId);
 
-    void addLike(String author, String articleName);
+    void addLike(String author, String articleName,String username);
 
     void addFollow(String author);
 }

@@ -1,6 +1,7 @@
 package com.example.ProjectNova.Nova.API;
 
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
+import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
 import com.example.ProjectNova.Nova.Model.*;
 import com.example.ProjectNova.Nova.Service.CreatorService;
@@ -94,7 +95,7 @@ public class MainController {
     ///ReadList editing//////////////////////////////////////////////////////
     @PostMapping(path = "/createReadList/{userName}/{name}")
     public void createReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
-        creatorS.createReadList(userName, name, new ArrayList<String>());
+        creatorS.createReadList(userName, name, new ArrayList<String>(),new ArrayList<String>());
     }
 
     @PostMapping(path = "/addToReadList/{userName}/{name}")
@@ -124,7 +125,7 @@ public class MainController {
 
     //Article Creation
     @PostMapping(path = "/createArticle")
-    public void createArticle(@RequestBody Article article) {
+    public void createArticle(@RequestBody Article article) throws CreationException {
         creatorS.createArticle(article);
     }
 

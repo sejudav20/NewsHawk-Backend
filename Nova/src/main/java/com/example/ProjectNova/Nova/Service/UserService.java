@@ -7,6 +7,7 @@ import com.example.ProjectNova.Nova.DAO.UserDAO;
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
 import com.example.ProjectNova.Nova.Model.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ public class UserService {
     //this service focuses on user/viewer actions such as adding to favorites, getting recommended articles
     AWSUserDAO uDao;
     AWSContentDAO cDao;
-
+    @Autowired
     public UserService(@Qualifier("UserDao") AWSUserDAO aWSUserDAO, @Qualifier("ContentDAO") AWSContentDAO aWSContentDAO) {
         this.uDao = aWSUserDAO;
         this.cDao = aWSContentDAO;
@@ -46,7 +47,7 @@ public class UserService {
     public User createUser(User user) {
         String id = IdService.getId();
         User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(user.getName(),"Read Later",
-                new ArrayList<String>()), new ReadList(user.getName(), "History",new ArrayList<String>() ), new ReadList(user.getName(),"Liked", new ArrayList<String>() ),
+                new ArrayList<String>(),new ArrayList<String>() ), new ReadList(user.getName(), "History",new ArrayList<String>(),new ArrayList<String>()  ), new ReadList(user.getName(),"Liked", new ArrayList<String>(),new ArrayList<String>() ),
                 new ArrayList<String>(),new ArrayList<String>() ,new ArrayList<String>(), IdService.getTimeStamp());
 
         return uDao.createUser(newUser);
@@ -60,7 +61,7 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        User newUser = new User(name, password, id, null,  new ReadList(name, "Read Later",new ArrayList<String>()), new ReadList(name, "History",new ArrayList<String>() ),new ReadList(name, "Liked",new ArrayList<String>()),
+        User newUser = new User(name, password, id, null,  new ReadList(name, "Read Later",new ArrayList<String>(),new ArrayList<String>() ), new ReadList(name, "History",new ArrayList<String>(),new ArrayList<String>()  ),new ReadList(name, "Liked",new ArrayList<String>(),new ArrayList<String>() ),
                 new ArrayList<String>(), new ArrayList<String>(),new ArrayList<String>(), IdService.getTimeStamp());
         return uDao.createUser(newUser);
     }
@@ -88,7 +89,7 @@ public class UserService {
 
     public void likeAnArticle(String username, String author, String articleName) {
         uDao.addLiked(username,author,articleName);
-        cDao.addLike(author,articleName);
+        cDao.addLike(author,articleName,username);
 
     }
 

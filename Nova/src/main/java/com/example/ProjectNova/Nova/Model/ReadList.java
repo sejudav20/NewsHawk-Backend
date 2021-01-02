@@ -12,20 +12,31 @@ public class ReadList {
    //sort key
     private String author;
     private List<String> articles;
+    private List<String> articleAuthors;
     //primary key
     private String name;
 
     public ReadList(@JsonProperty("author")String author,@JsonProperty("name") String name,
-                    @JsonProperty("articles")List<String> articles) {
+                    @JsonProperty("articles")List<String> articles,@JsonProperty("articleAuthors")List<String> articleAuthors) {
         this.author = author!=null?author:this.author;
         this.articles = articles!=null?articles:this.articles;
+        this.articleAuthors = articleAuthors!=null?articleAuthors:this.articleAuthors;
         this.name = name!=null?name:this.name;
+
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
     @DynamoDbSortKey
     public String getAuthor() {
         return author;
+    }
+
+    public List<String> getArticleAuthors() {
+        return articleAuthors;
+    }
+
+    public void setArticleAuthors(List<String> articleAuthors) {
+        this.articleAuthors = articleAuthors;
     }
 
     public void setAuthor(String author) {

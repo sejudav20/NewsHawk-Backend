@@ -27,16 +27,17 @@ public class Article {
     private Map<String, Object> info;
     private List<String> comments;
     private int viewCount;
+    private int liked;
     private Date timestamp;
     private String iconId;
 
     public Article(@JsonProperty("title") String title, @JsonProperty("author") String author, @JsonProperty("thumbnailId")
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
                    @JsonProperty("info") Map<String, Object> info, @JsonProperty("comments") List<String> comments,
-                   @JsonProperty("viewCount") int viewCount, @JsonProperty("timeStamp") Date timestamp,
+                   @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") Date timestamp,
                    @JsonProperty("channelIcon") String iconId) {
         //this.id = id!=null?id:this.id;
-        this.author = author != null ? this.author : this.author;
+        this.author = author != null ? author : this.author;
         this.thumbnailId = thumbnailId != null ? thumbnailId : this.thumbnailId;
         this.title = title != null ? title : this.title;
         this.mainContent = mainContent != null ? mainContent : this.mainContent;
@@ -44,8 +45,23 @@ public class Article {
         this.info = info != null ? info : this.info;
         this.comments = comments != null ? comments : this.comments;
         this.viewCount = viewCount != 0 ? viewCount : this.viewCount;
+        this.liked = liked != 0 ? liked : this.liked;
         this.timestamp = timestamp != null ? timestamp : this.timestamp;
         this.iconId = iconId != null ? iconId : this.iconId;
+    }
+    public void merge(Article article) {
+        //this.id = id!=null?id:this.id;
+        this.author = article.author != null ? article.author : this.author;
+        this.thumbnailId = article.thumbnailId != null ? article.thumbnailId : this.thumbnailId;
+        this.title = article.title != null ? article.title : this.title;
+        this.mainContent = article.mainContent != null ? article.mainContent : this.mainContent;
+        this.sources = article.sources != null ? article.sources : this.sources;
+        this.info = article.info != null ? article.info : this.info;
+        this.comments = article.comments != null ? article.comments : this.comments;
+        this.viewCount = article.viewCount != 0 ? article.viewCount : this.viewCount;
+        this.liked = article.liked != 0 ? article.liked : this.liked;
+        this.timestamp = article.timestamp != null ? article.timestamp : this.timestamp;
+        this.iconId = article.iconId != null ? article.iconId : this.iconId;
     }
 
     public String getIconId() {
@@ -63,6 +79,15 @@ public class Article {
 //    public void setId(String id) {
 //        this.id = id;
 //    }
+
+    public int getLiked() {
+        return liked;
+    }
+
+    public void setLiked(int liked) {
+        this.liked = liked;
+    }
+
     @DynamoDbSortKey
     public String getAuthor() {
         return author;

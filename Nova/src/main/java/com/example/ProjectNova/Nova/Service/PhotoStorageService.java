@@ -13,8 +13,8 @@ import java.util.List;
 @Service
 public class PhotoStorageService {
     AWSPhotoDAO photoDAO;
-    public PhotoStorageService(@Qualifier("UserDao") AWSPhotoDAO aWSPhotDAO){
-        this.photoDAO=aWSPhotDAO;
+    public PhotoStorageService(@Qualifier("UserDao") AWSPhotoDAO aWSPhotoDAO){
+        this.photoDAO=aWSPhotoDAO;
     }
     public void uploadFiles(List<File> files, List<String> paths) {
         photoDAO.uploadFiles(files,paths);
