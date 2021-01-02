@@ -130,4 +130,11 @@ public class User implements Cloneable{
     public void setTimeStamp(Date timeStamp) {
         this.timeStamp = timeStamp;
     }
+    public List<String> getSubscribed() {
+        return subscribed;
+    }
+
+    public void setSubscribed(List<String> subscribed) {
+        this.subscribed = subscribed;
+    }
 }
