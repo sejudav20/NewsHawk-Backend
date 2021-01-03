@@ -157,7 +157,7 @@ public class AWSContentDAO implements ContentDAO {
         itemValues.put("sources", AttributeValue.builder().s(article.getSources()).build());
         itemValues.put("info", AttributeValue.builder().m(article.getInfoAsMap()).build());
         itemValues.put("viewCount", AttributeValue.builder().n(String.valueOf(article.getViewCount())).build());
-        itemValues.put("timestamp", AttributeValue.builder().s(String.valueOf(article.getTimestamp().getTime())).build());
+        itemValues.put("timestamp", AttributeValue.builder().s(String.valueOf(article.getTimestamp())).build());
 
         return itemValues;
     }
