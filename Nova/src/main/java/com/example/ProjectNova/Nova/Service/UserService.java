@@ -47,8 +47,7 @@ public class UserService {
     }
     public User createUser(User user) throws CreationException {
         String id = IdService.getId();
-        User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(user.getName(),"Read Later",
-                new ArrayList<String>(),new ArrayList<String>() ), new ReadList(user.getName(), "History",new ArrayList<String>(),new ArrayList<String>()  ), new ReadList(user.getName(),"Liked", new ArrayList<String>(),new ArrayList<String>() ),
+        User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(),
                 new ArrayList<String>(),new ArrayList<String>() ,new ArrayList<String>(), IdService.getTimeStamp());
 
         return uDao.createUser(newUser);
@@ -62,7 +61,7 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        User newUser = new User(name, password, id, null,  new ReadList(name, "Read Later",new ArrayList<String>(),new ArrayList<String>() ), new ReadList(name, "History",new ArrayList<String>(),new ArrayList<String>()  ),new ReadList(name, "Liked",new ArrayList<String>(),new ArrayList<String>() ),
+        User newUser = new User(name, password, id, null,
                 new ArrayList<String>(), new ArrayList<String>(),new ArrayList<String>(), IdService.getTimeStamp());
         return uDao.createUser(newUser);
     }
