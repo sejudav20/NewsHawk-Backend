@@ -320,7 +320,7 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbTable<Comment> atable = eclient.table("Comments", TableSchema.fromBean(Comment.class));
         atable.updateItem(comment);
     }
-
+//testing
     @Override
     public void deleteArticle(String name, String author) {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
