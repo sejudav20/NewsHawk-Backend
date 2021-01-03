@@ -12,13 +12,21 @@ import javax.management.Attribute;
 import java.util.*;
 @Repository("UserDao")
 public class AWSUserDAO implements UserDAO{
+    public void createTable(DynamoDbTable d){
+        d.createTable();
+    }
     @Override
     public User createUser(User user) throws CreationException {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<User> uTable = uClient.table("Users", TableSchema.fromBean(User.class));
         try{
             uTable.putItem(user);
+        }catch(ResourceNotFoundException r){
+            createTable(uTable);
+            createUser(user);
         }catch(DynamoDbException de) {
+
+          de.printStackTrace();
             throw new CreationException();
         }
         return user;
