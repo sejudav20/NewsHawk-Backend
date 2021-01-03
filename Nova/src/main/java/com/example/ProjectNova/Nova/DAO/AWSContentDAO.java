@@ -27,7 +27,9 @@ public class AWSContentDAO implements ContentDAO {
     public DynamoDbClient getDynamo() {
         return new AWSInitializer().getClient();
     }
-
+    public void createTable(DynamoDbTable d){
+        d.createTable();
+    }
     public Map<String, Object> getInfoAsMap(Map<String, AttributeValue> info) {
         HashMap<String, Object> itemValues = new HashMap();
 
@@ -53,6 +55,9 @@ public class AWSContentDAO implements ContentDAO {
 
         try {
             atable.putItem(article);
+        }catch(ResourceNotFoundException r) {
+            createTable(atable);
+            createArticle(article);
         } catch (DynamoDbException r) {
             throw new CreationException();
         }
@@ -63,7 +68,27 @@ public class AWSContentDAO implements ContentDAO {
     public ReadList createReadList(String userId, ReadList readList) {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
-        atable.putItem(readList);
+
+        DynamoDbClient dy = AWSInitializer.getClient();
+        HashMap<String, AttributeValueUpdate> updatedValues =
+                new HashMap();
+
+
+        updatedValues.put("readLists", AttributeValueUpdate.builder()
+                .value(AttributeValue.builder().n(readList.getName()).build())
+                .action(AttributeAction.ADD)
+                .build());
+        HashMap<String, AttributeValue> keys =
+                new HashMap();
+        keys.put("name", AttributeValue.builder().s(userId).build());
+        UpdateItemRequest u= UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("usercontent")
+                .build();
+        dy.updateItem(u);
+
+        try{atable.putItem(readList);}catch(ResourceNotFoundException r) {
+            createTable(atable);
+            createReadList(userId,readList);
+        }
 
         return readList;
     }
@@ -74,7 +99,10 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbTable<Comment> atable = eclient.table("Comments", TableSchema.fromBean(Comment.class));
         try {
             atable.putItem(comment);
-        } catch (DynamoDbException ex) {
+        }catch(ResourceNotFoundException r) {
+            createTable(atable);
+            createComment(comment);
+        }  catch (DynamoDbException ex) {
 
         }
         return comment;

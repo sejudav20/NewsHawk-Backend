@@ -38,6 +38,9 @@ public class AWSUserDAO implements UserDAO{
         DynamoDbTable<UserContent> uTable = uClient.table("UserContents", TableSchema.fromBean(UserContent.class));
         try{
             uTable.putItem(userContent);
+        }catch(ResourceNotFoundException r) {
+            createTable(uTable);
+            createUserContent(userContent);
         }catch(DynamoDbException de) {
             throw new CreationException();
         }
@@ -184,6 +187,9 @@ public class AWSUserDAO implements UserDAO{
         try{
             comment.setId(articleId);
             uTable.putItem(comment);
+        }catch(ResourceNotFoundException r) {
+            createTable(uTable);
+            createComment(articleId,comment);
         }catch(DynamoDbException de) {
             throw new CreationException();
         }
