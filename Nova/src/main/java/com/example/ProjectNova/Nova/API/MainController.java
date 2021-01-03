@@ -39,7 +39,7 @@ public class MainController {
 
     //////User stuff/////////////////////////////////////////
     @PostMapping(path = "/createUser")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@RequestBody User user) throws CreationException {
         return userS.createUser(user);
     }
     @GetMapping(path = "/getUserThumbnail/{name}")
@@ -53,7 +53,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/createUser/{name}/{password}")
-    public User createUser(@PathVariable("name") String name, @PathVariable("password") String password) throws UsernameAlreadyExistException {
+    public User createUser(@PathVariable("name") String name, @PathVariable("password") String password) throws UsernameAlreadyExistException, CreationException {
         return userS.createUser(name, password);
     }
 
@@ -63,12 +63,12 @@ public class MainController {
     }
 
     @GetMapping(path = "/auth/{name}/{password}/{type}") ///type not implemented yet so it can be anything
-    public User authenticateUser(@PathVariable("name") String name, @PathVariable("password") String password, @PathVariable("type") String type) throws AuthenticationException {
+    public User authenticateUser(@PathVariable("name") String name, @PathVariable("password") String password, @PathVariable("type") String type) throws AuthenticationException, CreationException {
         return userS.authenticateUser(name, password);
     }
 
     @GetMapping(path = "/getUserContent/{name}")
-    public UserContent getUserContent(@PathVariable("name") String name) {
+    public UserContent getUserContent(@PathVariable("name") String name) throws CreationException {
         return userS.getUserContent(name);
     }
     @PostMapping(path = "/updateUserContent")
@@ -178,7 +178,7 @@ public class MainController {
         return creatorS.getArticleComments(articleId);
     }
     @PostMapping(path="/createComment/{articleId}")
-    public void createComment(@PathVariable("articleId")String articleId,@RequestBody Comment comment){
+    public void createComment(@PathVariable("articleId")String articleId,@RequestBody Comment comment) throws CreationException {
         userS.createComment(articleId,comment);
     }
     @PostMapping(path="/updateComment/{articleId}/{user}/{timestamp}")

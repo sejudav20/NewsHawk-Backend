@@ -1,5 +1,6 @@
 package com.example.ProjectNova.Nova.DAO;
 
+import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.User;
@@ -12,13 +13,13 @@ public interface UserDAO {
 
     //Create
 
-    public User createUser(User user);
-    public UserContent createUserContent(UserContent userContent);
+    public User createUser(User user) throws CreationException;
+    public UserContent createUserContent(UserContent userContent) throws CreationException;
 
     //Read
-    public User getUser(String name);
-    public UserContent getUserContent(String user);
-    public String getPassword(String username);
+    public User getUser(String name) throws CreationException;
+    public UserContent getUserContent(String user) throws CreationException;
+    public String getPassword(String username) throws CreationException;
     public List<Article> getUserHistory(String userId);
 
     //Update
@@ -37,7 +38,7 @@ public interface UserDAO {
 
     void updateUserContent(UserContent userContent);
 
-    void createComment(String articleId, Comment comment);
+    void createComment(String articleId, Comment comment) throws CreationException;
 
     void updateComment(String articleId, Comment comment);
 

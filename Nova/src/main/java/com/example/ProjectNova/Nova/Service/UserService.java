@@ -5,6 +5,7 @@ import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
 import com.example.ProjectNova.Nova.DAO.ContentDAO;
 import com.example.ProjectNova.Nova.DAO.UserDAO;
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
+import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
 import com.example.ProjectNova.Nova.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +45,7 @@ public class UserService {
     public List<Article> getReadLater(String userId){
         return uDao.getReadLater(userId);
     }
-    public User createUser(User user) {
+    public User createUser(User user) throws CreationException {
         String id = IdService.getId();
         User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(), new ReadList(user.getName(),"Read Later",
                 new ArrayList<String>(),new ArrayList<String>() ), new ReadList(user.getName(), "History",new ArrayList<String>(),new ArrayList<String>()  ), new ReadList(user.getName(),"Liked", new ArrayList<String>(),new ArrayList<String>() ),
@@ -52,11 +53,11 @@ public class UserService {
 
         return uDao.createUser(newUser);
     }
-    public UserContent getUserContent(String name){
+    public UserContent getUserContent(String name) throws CreationException {
         return uDao.getUserContent(name);
     }
 
-    public User createUser(String name, String password) throws UsernameAlreadyExistException {
+    public User createUser(String name, String password) throws UsernameAlreadyExistException, CreationException {
         String id = IdService.getId();
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
@@ -78,7 +79,7 @@ public class UserService {
         return uDao.getUser(name);
     }
 
-    public User authenticateUser(String userId, String password) throws AuthenticationException {
+    public User authenticateUser(String userId, String password) throws AuthenticationException, CreationException {
         if (uDao.getPassword(userId).equals(password)) {
             return getUserbyName(userId);
         } else {
@@ -107,7 +108,7 @@ public class UserService {
         uDao.updateUserContent(userContent);
     }
 
-    public void createComment(String articleId, Comment comment) {
+    public void createComment(String articleId, Comment comment) throws CreationException {
         uDao.createComment(articleId,comment);
     }
 
