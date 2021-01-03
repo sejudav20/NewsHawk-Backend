@@ -137,4 +137,17 @@ public class User implements Cloneable{
     public void setSubscribed(List<String> subscribed) {
         this.subscribed = subscribed;
     }
+    public void merge(User user) {
+        this.name = user.name!=null?user.name:this.name;
+        this.password = user.password!=null?user.password:this.password;
+        this.contentId = user.contentId!=null?user.contentId:this.contentId;
+        this.profilePic = user.profilePic!=null?user.profilePic:this.profilePic;
+        this.articleHistory = user.articleHistory!=null?user.articleHistory:this.articleHistory;
+        this.readLater = user.readLater!=null?user.readLater:this.readLater;
+        this.liked = user.liked!=null?user.liked:this.liked;
+        this.disliked = user.disliked!=null?user.disliked:this.disliked;
+        this.following = user.following!=null?user.following:this.following;
+        this.subscribed = user.subscribed!=null?user.subscribed:this.subscribed;
+        this.timeStamp = user.timeStamp!=null?user.timeStamp:this.timeStamp;
+    }
 }
