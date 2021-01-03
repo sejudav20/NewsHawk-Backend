@@ -49,7 +49,8 @@ public class UserService {
         String id = IdService.getId();
         User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(),
                 new ArrayList<String>(),new ArrayList<String>() ,new ArrayList<String>(), IdService.getTimeStamp());
-
+        UserContent u= new UserContent(user.getName(),new ArrayList<String>(),0,0,IdService.getId(),new ArrayList<String>(),0,0);
+        uDao.createUserContent(u);
         return uDao.createUser(newUser);
     }
     public UserContent getUserContent(String name) throws CreationException {
@@ -63,6 +64,8 @@ public class UserService {
         }
         User newUser = new User(name, password, id, null,
                 new ArrayList<String>(), new ArrayList<String>(),new ArrayList<String>(), IdService.getTimeStamp());
+        UserContent u= new UserContent(name,new ArrayList<String>(),0,0,IdService.getId(),new ArrayList<String>(),0,0);
+        uDao.createUserContent(u);
         return uDao.createUser(newUser);
     }
 

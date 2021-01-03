@@ -13,7 +13,7 @@ public class UserContent {
  private List<String> articles;
  private int followers;
  private String userId;
- private List<ReadList> readLists;
+ private List<String> readLists;
  private int channelViews;
  private int subscribers;
  private double percentFollowers;
@@ -21,7 +21,7 @@ public class UserContent {
 
  public UserContent(@JsonProperty("name")String name,@JsonProperty("articles") List<String> articles,
                     @JsonProperty("followers")int followers,@JsonProperty("subscribers")int subscribers,
-                    @JsonProperty("userId") String userId, @JsonProperty("readLists") List<ReadList> readLists,
+                    @JsonProperty("userId") String userId, @JsonProperty("readLists") List<String> readLists,
                     @JsonProperty("channelViews")int channelViews,@JsonProperty("percentFollowers") double percentFollowers) {
 
 
@@ -68,11 +68,11 @@ public class UserContent {
   this.userId = userId;
  }
 
- public List<ReadList> getReadLists() {
+ public List<String> getReadLists() {
   return readLists;
  }
 
- public void setReadLists(List<ReadList> readLists) {
+ public void setReadLists(List<String> readLists) {
   this.readLists = readLists;
  }
 
