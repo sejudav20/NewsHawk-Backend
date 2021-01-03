@@ -10,7 +10,11 @@ import software.amazon.awssdk.services.dynamodb.model.*;
 
 import javax.management.Attribute;
 import java.util.*;
+<<<<<<< HEAD
 //TheTestForCommit
+=======
+
+>>>>>>> UserDao
 @Repository("UserDao")
 public class AWSUserDAO implements UserDAO{
     @Override
