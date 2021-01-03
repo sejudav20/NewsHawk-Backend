@@ -199,7 +199,7 @@ public class MainController {
     public void subscribe(@PathVariable("username")String username,@PathVariable("author")String author){
         userS.subscribe(username,author);
     }
-    @PostMapping(path="/addSubscribe/{username}/{author}")
+    @PostMapping(path="/addFollow/{username}/{author}")
     public void follow(@PathVariable("username")String username,@PathVariable("author")String author){
         userS.follow(username,author);
     }

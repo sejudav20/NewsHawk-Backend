@@ -21,7 +21,7 @@ public class User implements Cloneable{
     private List<String> disliked;
     private List<String> following;
     private List<String> subscribed;
-    private Date timeStamp;
+    private long timeStamp;
     public User(){
 
     }
@@ -30,7 +30,7 @@ public class User implements Cloneable{
                 @JsonProperty("articleHistory")ReadList articleHistory,@JsonProperty("readLater") ReadList readLater,
                 @JsonProperty("liked")ReadList liked,@JsonProperty("disliked") List<String> disliked,
                 @JsonProperty("following")List<String> following,@JsonProperty("subscribed")List<String> subscribed,
-                @JsonProperty("timeStamp") Date timeStamp) {
+                @JsonProperty("timeStamp") long timeStamp) {
 
 
         this.name = name!=null?name:this.name;
@@ -43,7 +43,8 @@ public class User implements Cloneable{
         this.disliked = disliked!=null?disliked:this.disliked;
         this.following = following!=null?following:this.following;
         this.subscribed = subscribed!=null?subscribed:this.subscribed;
-        this.timeStamp = timeStamp!=null?timeStamp:this.timeStamp;
+        this.timeStamp = timeStamp!=0?timeStamp:System.currentTimeMillis();
+
     }
 
     ////////////////Getters and setters////////////////////////////////////////////////////////////////////////
@@ -123,11 +124,11 @@ public class User implements Cloneable{
         this.following = following;
     }
 
-    public Date getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
     public List<String> getSubscribed() {
@@ -148,6 +149,6 @@ public class User implements Cloneable{
         this.disliked = user.disliked!=null?user.disliked:this.disliked;
         this.following = user.following!=null?user.following:this.following;
         this.subscribed = user.subscribed!=null?user.subscribed:this.subscribed;
-        this.timeStamp = user.timeStamp!=null?user.timeStamp:this.timeStamp;
+        this.timeStamp = user.timeStamp!=0?user.timeStamp:this.timeStamp;
     }
 }

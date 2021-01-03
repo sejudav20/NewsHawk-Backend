@@ -28,13 +28,13 @@ public class Article {
     private List<String> comments;
     private int viewCount;
     private int liked;
-    private Date timestamp;
+    private long timestamp;
     private String iconId;
 
     public Article(@JsonProperty("title") String title, @JsonProperty("author") String author, @JsonProperty("thumbnailId")
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
                    @JsonProperty("info") Map<String, Object> info, @JsonProperty("comments") List<String> comments,
-                   @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") Date timestamp,
+                   @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") long timestamp,
                    @JsonProperty("channelIcon") String iconId) {
         //this.id = id!=null?id:this.id;
         this.author = author != null ? author : this.author;
@@ -46,7 +46,7 @@ public class Article {
         this.comments = comments != null ? comments : this.comments;
         this.viewCount = viewCount != 0 ? viewCount : this.viewCount;
         this.liked = liked != 0 ? liked : this.liked;
-        this.timestamp = timestamp != null ? timestamp : this.timestamp;
+        this.timestamp = timestamp != 0 ? timestamp : this.timestamp;
         this.iconId = iconId != null ? iconId : this.iconId;
     }
     public void merge(Article article) {
@@ -60,7 +60,7 @@ public class Article {
         this.comments = article.comments != null ? article.comments : this.comments;
         this.viewCount = article.viewCount != 0 ? article.viewCount : this.viewCount;
         this.liked = article.liked != 0 ? article.liked : this.liked;
-        this.timestamp = article.timestamp != null ? article.timestamp : this.timestamp;
+        this.timestamp = article.timestamp != 0 ? article.timestamp : this.timestamp;
         this.iconId = article.iconId != null ? article.iconId : this.iconId;
     }
 
@@ -174,11 +174,11 @@ public class Article {
         this.viewCount = viewCount;
     }
 
-    public Date getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 }

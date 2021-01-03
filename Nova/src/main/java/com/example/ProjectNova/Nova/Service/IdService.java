@@ -9,7 +9,7 @@ public class IdService {
     public static String getId(){
         return UUID.randomUUID().toString();
     };
-    public static Date getTimeStamp(){
-        return new Date(new Timestamp(new Date().getTime()).getTime());
+    public static long getTimeStamp(){
+        return System.currentTimeMillis();
     }
 }

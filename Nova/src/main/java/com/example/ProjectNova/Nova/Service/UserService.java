@@ -22,7 +22,7 @@ public class UserService {
     AWSUserDAO uDao;
     AWSContentDAO cDao;
     @Autowired
-    public UserService(@Qualifier("UserDao") AWSUserDAO aWSUserDAO, @Qualifier("ContentDAO") AWSContentDAO aWSContentDAO) {
+    public UserService(@Qualifier("UserDao") AWSUserDAO aWSUserDAO, @Qualifier("ContentDao") AWSContentDAO aWSContentDAO) {
         this.uDao = aWSUserDAO;
         this.cDao = aWSContentDAO;
     }
