@@ -2,6 +2,7 @@ package com.example.ProjectNova.Nova.API;
 
 import com.example.ProjectNova.Nova.Errors.AuthenticationException;
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.UserDoesNotExistException;
 import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
 import com.example.ProjectNova.Nova.Model.*;
 import com.example.ProjectNova.Nova.Service.CreatorService;
@@ -52,7 +53,7 @@ public class MainController {
         userS.deleteUser(name);
     }
 
-    @GetMapping(path = "/createUser/{name}/{password}")
+    @PostMapping(path = "/createUser/{name}/{password}")
     public User createUser(@PathVariable("name") String name, @PathVariable("password") String password) throws UsernameAlreadyExistException, CreationException {
         return userS.createUser(name, password);
     }
@@ -80,15 +81,14 @@ public class MainController {
 
 
     @GetMapping(path = "/getUser/{name}")
-    public User getUser(@PathVariable("name") String name) {
+    public User getUser(@PathVariable("name") String name) throws UserDoesNotExistException {
         User u = null;
         try {
-            u = userS.getUserbyName(name).clone();
+            u = userS.getUserbyName(name);
             u.setPassword(null);
-        } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+        } catch (NullPointerException e) {
+            throw new UserDoesNotExistException();
         }
-
         return u;
     }
 

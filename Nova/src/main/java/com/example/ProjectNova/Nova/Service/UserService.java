@@ -59,9 +59,9 @@ public class UserService {
 
     public User createUser(String name, String password) throws UsernameAlreadyExistException, CreationException {
         String id = IdService.getId();
-        if (uDao.usernameExists(name)) {
-            throw new UsernameAlreadyExistException();
-        }
+//        if (uDao.usernameExists(name)) {
+//            throw new UsernameAlreadyExistException();
+//        }
         User newUser = new User(name, password, id, null,
                 new ArrayList<String>(), new ArrayList<String>(),new ArrayList<String>(), IdService.getTimeStamp());
         UserContent u= new UserContent(name,new ArrayList<String>(),0,0,IdService.getId(),new ArrayList<String>(),0,0);
