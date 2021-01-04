@@ -42,6 +42,8 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createUserContent(userContent);
         }catch(DynamoDbException de) {
+
+            de.printStackTrace();
             throw new CreationException();
         }
         return userContent;
