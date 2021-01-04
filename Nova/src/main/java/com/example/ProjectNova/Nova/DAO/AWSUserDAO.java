@@ -97,7 +97,8 @@ public class AWSUserDAO implements UserDAO{
         try {
             Map<String, AttributeValue> results = ddc.getItem(gir).item();
             if(!results.isEmpty()) {
-                password = results.get(userName).toString();
+                System.out.println(results);
+                password = results.get("password").s();
             }
         }catch (DynamoDbException e){
             throw e;
