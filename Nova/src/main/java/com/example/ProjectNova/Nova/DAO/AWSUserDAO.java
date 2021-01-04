@@ -25,7 +25,6 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createUser(user);
         }catch(DynamoDbException de) {
-
           de.printStackTrace();
             throw new CreationException();
         }
@@ -42,7 +41,10 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createUserContent(userContent);
         }catch(DynamoDbException de) {
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
             de.printStackTrace();
             throw new CreationException();
         }
@@ -57,9 +59,9 @@ public class AWSUserDAO implements UserDAO{
                 .partitionValue(name)
                 .build();
         User u;
-        try{
+        try {
             u = uTable.getItem(key);
-        }catch(DynamoDbException de) {
+        } catch(DynamoDbException de) {
             throw de;
         }
         return u;
