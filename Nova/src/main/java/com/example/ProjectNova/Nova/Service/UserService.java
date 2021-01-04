@@ -83,7 +83,9 @@ public class UserService {
 
     public User authenticateUser(String userId, String password) throws AuthenticationException, CreationException {
         if (uDao.getPassword(userId).equals(password)) {
-            return getUserbyName(userId);
+            User e=getUserbyName(userId);
+            e.setPassword(null);
+            return e;
         } else {
             throw new AuthenticationException();
         }
