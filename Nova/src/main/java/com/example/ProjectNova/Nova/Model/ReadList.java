@@ -15,6 +15,7 @@ public class ReadList {
     private List<String> articleAuthors;
     //primary key
     private String name;
+    public ReadList(){}
 
     public ReadList(@JsonProperty("author")String author,@JsonProperty("name") String name,
                     @JsonProperty("articles")List<String> articles,@JsonProperty("articleAuthors")List<String> articleAuthors) {

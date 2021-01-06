@@ -75,17 +75,19 @@ public class AWSContentDAO implements ContentDAO {
 
 
         updatedValues.put("readLists", AttributeValueUpdate.builder()
-                .value(AttributeValue.builder().n(readList.getName()).build())
+                .value(AttributeValue.builder().ss(readList.getName()).build())
                 .action(AttributeAction.ADD)
                 .build());
         HashMap<String, AttributeValue> keys =
                 new HashMap();
         keys.put("name", AttributeValue.builder().s(userId).build());
-        UpdateItemRequest u= UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("usercontent")
+        UpdateItemRequest u= UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).
+                tableName("UserContents")
                 .build();
+        try{
         dy.updateItem(u);
 
-        try{atable.putItem(readList);}catch(ResourceNotFoundException r) {
+       atable.putItem(readList);}catch(ResourceNotFoundException r) {
             createTable(atable);
             createReadList(userId,readList);
         }
@@ -132,8 +134,8 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
 
         Key key = Key.builder()
-                .partitionValue(userId)
-                .sortValue(name)
+                .partitionValue(name)
+                .sortValue(userId)
                 .build();
         ReadList r = atable.getItem(key);
         return r;
@@ -297,23 +299,28 @@ public class AWSContentDAO implements ContentDAO {
 
     public void addArticleToReadList(String user, String name, List<String> articleName, List<String> ids) {
         DynamoDbClient dy = AWSInitializer.getClient();
+        DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
+        DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
 
         HashMap<String, AttributeValue> keyToGet = new HashMap<String, AttributeValue>();
 
         keyToGet.put("name", AttributeValue.builder().s(name).build());
         keyToGet.put("author", AttributeValue.builder().s(user).build());
+        System.out.println(articleName);
+        System.out.println(ids);
 
-
+        String[] a= {};
         HashMap<String, AttributeValueUpdate> uMap = new HashMap();
-        uMap.put("authors", AttributeValueUpdate.builder().value(AttributeValue.builder()
-                .ns(ids).build()).action(AttributeAction.ADD).build());
+        uMap.put("articleAuthors", AttributeValueUpdate.builder().value(AttributeValue.builder()
+        .ss(ids).build()).action(AttributeAction.ADD).build());
         uMap.put("articles", AttributeValueUpdate.builder().value(AttributeValue.builder().
-                ns(articleName).build()).action(AttributeAction.ADD).build());
+                ss(articleName).build()).action(AttributeAction.ADD).build());
 
-
+        
         UpdateItemRequest u = UpdateItemRequest.builder().tableName("ReadLists").key(keyToGet).attributeUpdates(uMap)
                 .build();
         dy.updateItem(u);
+
 
     }
 
