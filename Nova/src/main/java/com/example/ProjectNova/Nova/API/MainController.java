@@ -93,12 +93,17 @@ public class MainController {
     }
 
     ///ReadList editing//////////////////////////////////////////////////////
-    @PostMapping(path = "/createReadList/{userName}/{name}")
+    @PostMapping(path = "/createReadList/{username}/{name}")
     public void createReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
         creatorS.createReadList(userName, name, new ArrayList<String>(),new ArrayList<String>());
     }
+    @GetMapping(path = "/getReadList/{username}/{name}")
+    public ReadList getReadList(@PathVariable("username")String userName, @PathVariable("name")String name) throws CreationException {
 
-    @PostMapping(path = "/addToReadList/{userName}/{name}")
+       ReadList r=creatorS.getReadList(userName,name);
+       return r;
+    }
+    @PostMapping(path = "/addToReadList/{username}/{name}")
     public void addToReadList(@PathVariable("username")String userName, @PathVariable("name")String name, @RequestBody()List<List<String>> articleNameAuthor) {
         ArrayList<String> articleName=new ArrayList();
         ArrayList<String> authorName=new ArrayList();
