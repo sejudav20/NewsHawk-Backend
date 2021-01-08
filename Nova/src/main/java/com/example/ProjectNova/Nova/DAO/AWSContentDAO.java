@@ -63,23 +63,25 @@ public class AWSContentDAO implements ContentDAO {
         }
         return article;
     }
-    public List<String> getList(Map<String, AttributeValue> keyMap,String attributeName,String tableName){
+    public List<List<String>> getList(Map<String, AttributeValue> keyMap,String attributeName,String tableName){
         DynamoDbClient ddc = AWSInitializer.getClient();
         GetItemRequest gir = GetItemRequest.builder()
                 .projectionExpression(attributeName)
                 .key(keyMap)
                 .tableName(tableName)
                 .build();
-        List<String> password;
-
+        List<List<String>> password=new ArrayList<>();
+            String[] s=attributeName.split(",");
 
         try {
             Map<String, AttributeValue> results = ddc.getItem(gir).item();
             System.out.println(results+ "    hi");
             if(!results.isEmpty()) {
                 System.out.println(results);
+                for(String e:s){
+                    password.add(results.get(attributeName).ss());
+                }
 
-                password=( results.get(attributeName).ss());
                 System.out.println(password);
 
                 return password;
@@ -90,6 +92,7 @@ public class AWSContentDAO implements ContentDAO {
         }
         return null;
     }
+
     @Override
     public ReadList createReadList(String userId, ReadList readList) {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
@@ -102,10 +105,12 @@ public class AWSContentDAO implements ContentDAO {
                 new HashMap();
         System.out.println("name "+userId);
         keys.put("name", AttributeValue.builder().s(userId).build());
-//        ArrayList<String> readListNames =(ArrayList<String>)getList(keys,"readLists","UserContents");
-//                readListNames.add(readList.getName());
+        List<String> readListNames = getList(keys,"readLists","UserContents").get(0);
+            ArrayList<String> aList= (ArrayList<String>)readListNames;
+               aList.add(readList.getName());
+
         updatedValues.put("readLists", AttributeValueUpdate.builder()
-                .value(AttributeValue.builder().s(readList.getName()).build()).action(AttributeAction.ADD)
+                .value(AttributeValue.builder().ss(aList).build()).action(AttributeAction.PUT)
                 .build());
 
         UpdateItemRequest u= UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).
