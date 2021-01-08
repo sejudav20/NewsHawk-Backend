@@ -105,9 +105,9 @@ public class MainController {
     }
     @PostMapping(path = "/addToReadList/{username}/{name}")
     public void addToReadList(@PathVariable("username")String userName, @PathVariable("name")String name, @RequestBody()List<List<String>> articleNameAuthor) {
-        ArrayList<String> articleName=new ArrayList();
-        ArrayList<String> authorName=new ArrayList();
-        for( List<String> list:articleNameAuthor){
+        List<String> articleName=new ArrayList<>();
+        List<String> authorName=new ArrayList<>();
+        for(List<String> list:articleNameAuthor){
             articleName.add(list.get(0));
             authorName.add(list.get(1));
         }
@@ -115,8 +115,8 @@ public class MainController {
     }
     @PostMapping(path = "/removeFromReadList/{userName}/{name}")
     public void removeFromReadList(@PathVariable("username")String userName, @PathVariable("name")String name,@RequestBody List<List<String>> articleNameAuthor) {
-        ArrayList<String> articleName=new ArrayList();
-        ArrayList<String> authorName=new ArrayList();
+        List<String> articleName=new ArrayList<>();
+        List<String> authorName=new ArrayList<>();
         for( List<String> list:articleNameAuthor){
             articleName.add(list.get(0));
             authorName.add(list.get(1));
