@@ -106,7 +106,9 @@ public class AWSContentDAO implements ContentDAO {
         System.out.println("name "+userId);
         keys.put("name", AttributeValue.builder().s(userId).build());
         List<String> readListNames = getList(keys,"readLists","UserContents").get(0);
-            ArrayList<String> aList= (ArrayList<String>)readListNames;
+
+        ArrayList<String> aList= new ArrayList<>();
+        aList.addAll(readListNames);
                aList.add(readList.getName());
 
         updatedValues.put("readLists", AttributeValueUpdate.builder()
