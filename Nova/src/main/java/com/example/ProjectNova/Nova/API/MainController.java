@@ -117,7 +117,7 @@ public class MainController {
     public void removeFromReadList(@PathVariable("username")String userName, @PathVariable("name")String name,@RequestBody List<List<String>> articleNameAuthor) {
         List<String> articleName=new ArrayList<>();
         List<String> authorName=new ArrayList<>();
-        for( List<String> list:articleNameAuthor){
+        for(List<String> list:articleNameAuthor){
             articleName.add(list.get(0));
             authorName.add(list.get(1));
         }
