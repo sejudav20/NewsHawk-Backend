@@ -45,7 +45,7 @@ public class CreatorService {
     }
 
     public ReadList createReadList(String author,String name,List<String> ids,List<String> authors){
-        return cDao.createReadList(IdService.getId(),new ReadList(author,name,ids,authors));
+        return cDao.createReadList(author,new ReadList(author,name,ids,authors));
     }
     public void addArticleToReadlist(String author, String name, List<String> articleName, List<String> articleAuthor){
         cDao.addArticleToReadList(author,name,articleName,articleAuthor);

@@ -63,7 +63,33 @@ public class AWSContentDAO implements ContentDAO {
         }
         return article;
     }
+    public List<String> getList(Map<String, AttributeValue> keyMap,String attributeName,String tableName){
+        DynamoDbClient ddc = AWSInitializer.getClient();
+        GetItemRequest gir = GetItemRequest.builder()
+                .projectionExpression(attributeName)
+                .key(keyMap)
+                .tableName(tableName)
+                .build();
+        List<String> password;
 
+
+        try {
+            Map<String, AttributeValue> results = ddc.getItem(gir).item();
+            System.out.println(results+ "    hi");
+            if(!results.isEmpty()) {
+                System.out.println(results);
+
+                password=( results.get(attributeName).ss());
+                System.out.println(password);
+
+                return password;
+            }
+        }catch (DynamoDbException e){
+            throw e;
+
+        }
+        return null;
+    }
     @Override
     public ReadList createReadList(String userId, ReadList readList) {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
@@ -72,15 +98,16 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbClient dy = AWSInitializer.getClient();
         HashMap<String, AttributeValueUpdate> updatedValues =
                 new HashMap();
-
-
-        updatedValues.put("readLists", AttributeValueUpdate.builder()
-                .value(AttributeValue.builder().ss(readList.getName()).build())
-                .action(AttributeAction.ADD)
-                .build());
         HashMap<String, AttributeValue> keys =
                 new HashMap();
+        System.out.println("name "+userId);
         keys.put("name", AttributeValue.builder().s(userId).build());
+//        ArrayList<String> readListNames =(ArrayList<String>)getList(keys,"readLists","UserContents");
+//                readListNames.add(readList.getName());
+        updatedValues.put("readLists", AttributeValueUpdate.builder()
+                .value(AttributeValue.builder().s(readList.getName()).build()).action(AttributeAction.ADD)
+                .build());
+
         UpdateItemRequest u= UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).
                 tableName("UserContents")
                 .build();
@@ -301,7 +328,6 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbClient dy = AWSInitializer.getClient();
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
-
         HashMap<String, AttributeValue> keyToGet = new HashMap<String, AttributeValue>();
 
         keyToGet.put("name", AttributeValue.builder().s(name).build());
@@ -311,12 +337,11 @@ public class AWSContentDAO implements ContentDAO {
 
         String[] a= {};
         HashMap<String, AttributeValueUpdate> uMap = new HashMap();
-        uMap.put("articleAuthors", AttributeValueUpdate.builder().value(AttributeValue.builder()
-        .ss(ids).build()).action(AttributeAction.ADD).build());
         uMap.put("articles", AttributeValueUpdate.builder().value(AttributeValue.builder().
                 ss(articleName).build()).action(AttributeAction.ADD).build());
+        uMap.put("articleAuthors", AttributeValueUpdate.builder().value(AttributeValue.builder()
+        .ss(ids).build()).action(AttributeAction.ADD).build());
 
-        
         UpdateItemRequest u = UpdateItemRequest.builder().tableName("ReadLists").key(keyToGet).attributeUpdates(uMap)
                 .build();
         dy.updateItem(u);
