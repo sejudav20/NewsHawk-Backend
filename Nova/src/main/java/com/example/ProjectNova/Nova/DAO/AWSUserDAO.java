@@ -25,7 +25,6 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createUser(user);
         }catch(DynamoDbException de) {
-
           de.printStackTrace();
             throw new CreationException();
         }
@@ -42,7 +41,6 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createUserContent(userContent);
         }catch(DynamoDbException de) {
-
             de.printStackTrace();
             throw new CreationException();
         }
@@ -57,9 +55,9 @@ public class AWSUserDAO implements UserDAO{
                 .partitionValue(name)
                 .build();
         User u;
-        try{
+        try {
             u = uTable.getItem(key);
-        }catch(DynamoDbException de) {
+        } catch(DynamoDbException de) {
             throw de;
         }
         return u;
@@ -97,7 +95,9 @@ public class AWSUserDAO implements UserDAO{
         try {
             Map<String, AttributeValue> results = ddc.getItem(gir).item();
             if(!results.isEmpty()) {
+
                 System.out.println(results);
+
                 password = results.get("password").s();
             }
         }catch (DynamoDbException e){
@@ -134,22 +134,7 @@ public class AWSUserDAO implements UserDAO{
         }
     }
     public boolean usernameExists(String name){
-        DynamoDbClient ddc = AWSInitializer.getClient();
-        boolean contains = false;
-        try{
-            ScanRequest sr = ScanRequest.builder()
-                    .projectionExpression("name")
-                    .tableName("Users")
-                    .build();
-            ScanResponse srp = ddc.scan(sr);
-            for(Map<String, AttributeValue> results: srp.items()){
-                Set<String> keys = results.keySet();
-                contains = keys.contains(name);
-            }
-        }catch(DynamoDbException dde) {
-            throw dde;
-        }
-        return contains;
+        return false;
     }
 
     @Override

@@ -24,16 +24,19 @@ public class Article {
     private String mainContent;
     private String sources;
     //data and tags for each article
-    private Map<String, Object> info;
+    private List<String> info;
     private List<String> comments;
     private int viewCount;
     private int liked;
     private long timestamp;
     private String iconId;
 
+    public Article() {
+
+    }
     public Article(@JsonProperty("title") String title, @JsonProperty("author") String author, @JsonProperty("thumbnailId")
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
-                   @JsonProperty("info") Map<String, Object> info, @JsonProperty("comments") List<String> comments,
+                   @JsonProperty("info") List<String> info, @JsonProperty("comments") List<String> comments,
                    @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") long timestamp,
                    @JsonProperty("channelIcon") String iconId) {
         //this.id = id!=null?id:this.id;
@@ -129,32 +132,11 @@ public class Article {
         this.sources = sources;
     }
 
-    public Map<String, Object> getInfo() {
+    public List<String> getInfo() {
         return info;
     }
 
-    public Map<String, AttributeValue> getInfoAsMap() {
-        HashMap<String, AttributeValue> itemValues = new HashMap<String, AttributeValue>();
-
-        for (String s : info.keySet()) {
-            Object o = info.get(s);
-            if (o instanceof String) {
-                itemValues.put(s, AttributeValue.builder().s((String) o).build());
-            }
-            if (o instanceof String[]) {
-                itemValues.put(s, AttributeValue.builder().ns((String[]) o).build());
-            }
-            if (o instanceof Boolean) {
-                itemValues.put(s, AttributeValue.builder().bool((Boolean) o).build());
-            }
-            if (o instanceof Integer) {
-                itemValues.put(s, AttributeValue.builder().n(((Integer) o).toString()).build());
-            }
-        }
-        return itemValues;
-    }
-
-    public void setInfo(Map<String, Object> info) {
+    public void setInfo(List<String> info) {
         this.info = info;
     }
 

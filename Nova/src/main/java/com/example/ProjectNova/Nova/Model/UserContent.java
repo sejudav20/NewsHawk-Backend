@@ -20,7 +20,6 @@ public class UserContent {
 public UserContent(){
 
 }
-
  public UserContent(@JsonProperty("name")String name,@JsonProperty("articles") List<String> articles,
                     @JsonProperty("followers")int followers,@JsonProperty("subscribers")int subscribers,
                     @JsonProperty("userId") String userId, @JsonProperty("readLists") List<String> readLists,
