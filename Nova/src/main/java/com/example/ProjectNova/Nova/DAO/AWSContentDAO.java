@@ -79,7 +79,7 @@ public class AWSContentDAO implements ContentDAO {
             if(!results.isEmpty()) {
                 System.out.println(results);
                 for(String e:s){
-                    password.add(results.get(attributeName).ss());
+                    password.add(results.get(e).ss());
                 }
 
                 System.out.println(password);
@@ -339,15 +339,20 @@ public class AWSContentDAO implements ContentDAO {
 
         keyToGet.put("name", AttributeValue.builder().s(name).build());
         keyToGet.put("author", AttributeValue.builder().s(user).build());
-        System.out.println(articleName);
-        System.out.println(ids);
+        List<List<String>> lists=getList(keyToGet,"articles,articleAuthors","ReadLists");
+        List<String> articles=new ArrayList<>(lists.get(0));
+        List<String> articleAuthors=new ArrayList<>(lists.get(1));
+        articles.addAll(articleName);
+        articleAuthors.addAll(ids);
 
-        String[] a= {};
+
+
+
         HashMap<String, AttributeValueUpdate> uMap = new HashMap();
         uMap.put("articles", AttributeValueUpdate.builder().value(AttributeValue.builder().
-                ss(articleName).build()).action(AttributeAction.ADD).build());
+                ss(articles).build()).action(AttributeAction.PUT).build());
         uMap.put("articleAuthors", AttributeValueUpdate.builder().value(AttributeValue.builder()
-        .ss(ids).build()).action(AttributeAction.ADD).build());
+        .ss(articleAuthors).build()).action(AttributeAction.PUT).build());
 
         UpdateItemRequest u = UpdateItemRequest.builder().tableName("ReadLists").key(keyToGet).attributeUpdates(uMap)
                 .build();
@@ -364,14 +369,20 @@ public class AWSContentDAO implements ContentDAO {
 
         keyToGet.put("name", AttributeValue.builder().s(name).build());
         keyToGet.put("author", AttributeValue.builder().s(userName).build());
+        List<List<String>> lists=getList(keyToGet,"articles,articleAuthors","ReadLists");
+        List<String> articles=new ArrayList<>(lists.get(0));
+        List<String> articleAuthors=new ArrayList<>(lists.get(1));
+        articles.removeAll(articleNames);
+        articleAuthors.removeAll(authorNames);
+        System.out.println(articles);
+        System.out.println(articleAuthors);
 
 
         HashMap<String, AttributeValueUpdate> uMap = new HashMap();
-        uMap.put("authors", AttributeValueUpdate.builder().value(AttributeValue.builder()
-                .ns(authorNames).build()).action(AttributeAction.DELETE).build());
         uMap.put("articles", AttributeValueUpdate.builder().value(AttributeValue.builder().
-                ns(articleNames).build()).action(AttributeAction.DELETE).build());
-
+                ss(articleNames).build()).action(AttributeAction.DELETE).build());
+        uMap.put("articleAuthors", AttributeValueUpdate.builder().value(AttributeValue.builder()
+                .ss(authorNames).build()).action(AttributeAction.DELETE).build());
 
         UpdateItemRequest u = UpdateItemRequest.builder().tableName("ReadLists").key(keyToGet).attributeUpdates(uMap)
                 .build();
