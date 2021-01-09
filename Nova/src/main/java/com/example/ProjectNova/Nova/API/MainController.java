@@ -111,9 +111,10 @@ public class MainController {
             articleName.add(list.get(0));
             authorName.add(list.get(1));
         }
+
         creatorS.addArticleToReadlist(userName, name, articleName, authorName);
     }
-    @PostMapping(path = "/removeFromReadList/{userName}/{name}")
+    @PostMapping(path = "/removeFromReadList/{username}/{name}")
     public void removeFromReadList(@PathVariable("username")String userName, @PathVariable("name")String name,@RequestBody List<List<String>> articleNameAuthor) {
         List<String> articleName=new ArrayList<>();
         List<String> authorName=new ArrayList<>();
@@ -123,7 +124,7 @@ public class MainController {
         }
         creatorS.removeArticleFromReadlist(userName, name, articleName, authorName);
     }
-    @DeleteMapping(path = "/deleteReadList/{userName}/{name}")
+    @DeleteMapping(path = "/deleteReadList/{username}/{name}")
     public void deleteReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
         creatorS.deleteReadList(userName, name);
     }

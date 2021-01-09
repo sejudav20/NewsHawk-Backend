@@ -56,9 +56,10 @@ public class CreatorService {
 
 
     public void removeArticleFromReadlist(String userName, String name, List<String> articleName, List<String> authorName) {
-
+            cDao.removeArticleFromReadlist(userName,name,articleName,authorName);
     }
 
     public void deleteReadList(String userName, String name) {
+            cDao.deleteReadList(userName,name);
     }
 }
