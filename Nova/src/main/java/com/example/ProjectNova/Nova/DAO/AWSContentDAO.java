@@ -159,6 +159,8 @@ public class AWSContentDAO implements ContentDAO {
                 .sortValue(author)
                 .build();
         Article a = atable.getItem(key);
+
+
         return a;
     }
 
@@ -185,10 +187,12 @@ public class AWSContentDAO implements ContentDAO {
                     .partitionValue(originalName)
                     .sortValue(author)
                     .build();
+            Article original=atable.getItem(key);
 
-            article.merge(atable.getItem(key));
+
+            article.merge(original);
             atable.deleteItem(key);
-            atable.updateItem(article);
+            atable.putItem(article);
         } else {
             atable.updateItem(article);
         }

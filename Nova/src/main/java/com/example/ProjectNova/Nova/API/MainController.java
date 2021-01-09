@@ -134,6 +134,10 @@ public class MainController {
     public void createArticle(@RequestBody Article article) throws CreationException {
         creatorS.createArticle(article);
     }
+    @GetMapping(path = "/getArticle/{name}/{author}")
+    public Article getArticle(@PathVariable("name")String name, @PathVariable("author")String author) throws CreationException {
+       return  creatorS.getArticleByName(name,author);
+    }
 
     @PostMapping(path="/addArticleImages/{author}/{name}")
     public void addArticleImages(@PathVariable("author")String author,@PathVariable("name")String name,@RequestParam("images") MultipartFile[] images) {
@@ -155,8 +159,7 @@ public class MainController {
         }
     }
 
-    @GetMapping(path="/getArticleThumbnail/{author}/{name}"
-    )
+    @GetMapping(path="/getArticleThumbnail/{author}/{name}")
     public @ResponseBody File getArticleThumbNail(@PathVariable("author")String author,@PathVariable("name")String name) throws IOException {
         return photoS.getArticleThumbnail(author,name);
     }

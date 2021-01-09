@@ -24,7 +24,7 @@ public class Article {
     private String mainContent;
     private String sources;
     //data and tags for each article
-    private List<String> info;
+    private Map<String,List<String>> info;
     private List<String> comments;
     private int viewCount;
     private int liked;
@@ -36,7 +36,7 @@ public class Article {
     }
     public Article(@JsonProperty("title") String title, @JsonProperty("author") String author, @JsonProperty("thumbnailId")
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
-                   @JsonProperty("info") List<String> info, @JsonProperty("comments") List<String> comments,
+                   @JsonProperty("info") Map<String,List<String>> info, @JsonProperty("comments") List<String> comments,
                    @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") long timestamp,
                    @JsonProperty("channelIcon") String iconId) {
         //this.id = id!=null?id:this.id;
@@ -54,17 +54,17 @@ public class Article {
     }
     public void merge(Article article) {
         //this.id = id!=null?id:this.id;
-        this.author = article.author != null ? article.author : this.author;
-        this.thumbnailId = article.thumbnailId != null ? article.thumbnailId : this.thumbnailId;
-        this.title = article.title != null ? article.title : this.title;
-        this.mainContent = article.mainContent != null ? article.mainContent : this.mainContent;
-        this.sources = article.sources != null ? article.sources : this.sources;
-        this.info = article.info != null ? article.info : this.info;
-        this.comments = article.comments != null ? article.comments : this.comments;
-        this.viewCount = article.viewCount != 0 ? article.viewCount : this.viewCount;
-        this.liked = article.liked != 0 ? article.liked : this.liked;
-        this.timestamp = article.timestamp != 0 ? article.timestamp : this.timestamp;
-        this.iconId = article.iconId != null ? article.iconId : this.iconId;
+        this.author = author == null ? article.author : this.author;
+        this.thumbnailId = thumbnailId == null ? article.thumbnailId : this.thumbnailId;
+        this.title = title == null ? article.title : this.title;
+        this.mainContent = mainContent == null ? article.mainContent : this.mainContent;
+        this.sources = sources == null ? article.sources : this.sources;
+        this.info = info == null ? article.info : this.info;
+        this.comments = comments == null ? article.comments : this.comments;
+        this.viewCount = viewCount == 0 ? article.viewCount : this.viewCount;
+        this.liked = liked == 0 ? article.liked : this.liked;
+        this.timestamp = timestamp == 0 ? article.timestamp : this.timestamp;
+        this.iconId = iconId == null ? article.iconId : this.iconId;
     }
 
     public String getIconId() {
@@ -132,11 +132,11 @@ public class Article {
         this.sources = sources;
     }
 
-    public List<String> getInfo() {
+    public Map<String,List<String>> getInfo() {
         return info;
     }
 
-    public void setInfo(List<String> info) {
+    public void setInfo(Map<String,List<String>> info) {
         this.info = info;
     }
 

@@ -30,6 +30,8 @@ public class CreatorService {
 
     public void updateArticle(String author, String originalName, Article article) {
         Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), article.getTimestamp(),article.getIconId());
+
+
         cDao.updateArticle(author,originalName,newArticle);
     }
     public List<Comment> getArticleComments(String articleId){
