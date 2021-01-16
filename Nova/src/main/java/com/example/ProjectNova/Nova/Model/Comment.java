@@ -18,23 +18,34 @@ public class Comment {
     private String content;
     private List<String> replies;
     private boolean isReply;
-    //sortkey
-    private Date timeStamp;
+    private String userIconId;
 
+
+
+    //sortkey
+    private long timeStamp;
+    public Comment(){}
     public Comment(@JsonProperty("username")String username,@JsonProperty("articleId")String articleId,
                    @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies,
                    @JsonProperty("isReply")boolean isReply,@JsonProperty("userIconId") String userIconId,
-                   @JsonProperty("timeStamp") Date timeStamp) {
+                   @JsonProperty("timeStamp") long timeStamp) {
         this.username = username!=null?username:this.username;
         this.id = articleId!=null?articleId:this.id;
         this.content = content!=null?content:this.content;
         this.replies = replies!=null?replies:this.replies;
         this.isReply = isReply;
-        this.timeStamp = timeStamp!=null?timeStamp:this.timeStamp;
+        this.userIconId=userIconId!=null?userIconId:this.userIconId;
+        this.timeStamp = timeStamp!=0?timeStamp:this.timeStamp;
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
+    public String getUserIconId() {
+        return userIconId;
+    }
 
+    public void setUserIconId(String userIconId) {
+        this.userIconId = userIconId;
+    }
     public String getUsername() {
         return username;
     }
@@ -75,11 +86,11 @@ public class Comment {
         isReply = reply;
     }
     @DynamoDbSortKey
-    public Date getTimeStamp() {
+    public long getTimeStamp() {
         return timeStamp;
     }
 
-    public void setTimeStamp(Date timeStamp) {
+    public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }
 }

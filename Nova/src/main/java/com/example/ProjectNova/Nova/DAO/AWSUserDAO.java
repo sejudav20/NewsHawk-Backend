@@ -8,7 +8,6 @@ import software.amazon.awssdk.enhanced.dynamodb.*;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
-import javax.management.Attribute;
 import java.util.*;
 @Repository("UserDao")
 public class AWSUserDAO implements UserDAO{
@@ -172,6 +171,7 @@ public class AWSUserDAO implements UserDAO{
     public void createComment(String articleId, Comment comment) throws CreationException { // articleId already has the correct format
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
+
         try{
             comment.setId(articleId);
             uTable.putItem(comment);
@@ -179,6 +179,8 @@ public class AWSUserDAO implements UserDAO{
             createTable(uTable);
             createComment(articleId,comment);
         }catch(DynamoDbException de) {
+            System.out.println(de);
+
             throw new CreationException();
         }
     }
@@ -196,13 +198,36 @@ public class AWSUserDAO implements UserDAO{
     }
 
     @Override
-    public void deleteComment(String articleId, String user, String timestamp) {
+    public void deleteComment(String articleId, String user, long timestamp) {
+        DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
+        DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
+        Key key = Key.builder()
+                .partitionValue(articleId).sortValue(timestamp)
+                .build();
+        Comment c;
 
+        try{
+            c=uTable.deleteItem(key);
+        }catch(DynamoDbException de) {
+            throw de;
+        }
     }
 
     @Override
-    public void getComment(String articleId, String user, String timestamp) {
+    public Comment getComment(String articleId, String user, long timestamp) {
+        DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
+        DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
+        Key key = Key.builder()
+                .partitionValue(articleId).sortValue(timestamp)
+                .build();
+        Comment c;
+        try{
 
+            c=uTable.getItem(key);
+        }catch(DynamoDbException de) {
+            throw de;
+        }
+        return c;
     }
 
     public List<Article> getUserHistory(String userId) {

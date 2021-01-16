@@ -42,7 +42,7 @@ public interface UserDAO {
 
     void updateComment(String articleId, Comment comment);
 
-    void deleteComment(String articleId, String user, String timestamp);
+    void deleteComment(String articleId, String user, long timestamp);
 
-    void getComment(String articleId, String user, String timestamp);
+    Comment getComment(String articleId, String user, long timestamp);
 }
