@@ -194,13 +194,13 @@ public class MainController {
     public void updateComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp,@RequestBody Comment comment){
         userS.updateComment(articleId,comment);
     }
-    @PostMapping(path="/deleteComment/{articleId}/{user}/{timestamp}")
-    public void deleteComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp){
+    @DeleteMapping(path="/deleteComment/{articleId}/{user}/{timestamp}")
+    public void deleteComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")long timestamp){
         userS.deleteComment(articleId,user,timestamp);
     }
-    @PostMapping(path="/getComment/{articleId}/{user}/{timestamp}")
-    public void getComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp){
-        userS.getComment(articleId,user,timestamp);
+    @GetMapping(path="/getComment/{articleId}/{user}/{timestamp}")
+    public Comment getComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")long timestamp){
+        return userS.getComment(articleId,user,timestamp);
     }
     ///Basic operations////////////////
 

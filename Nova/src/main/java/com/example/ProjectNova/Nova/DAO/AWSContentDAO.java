@@ -133,13 +133,12 @@ public class AWSContentDAO implements ContentDAO {
     public Comment createComment(Comment comment) {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Comment> atable = eclient.table("Comments", TableSchema.fromBean(Comment.class));
+
         try {
             atable.putItem(comment);
         }catch(ResourceNotFoundException r) {
             createTable(atable);
             createComment(comment);
-        }  catch (DynamoDbException ex) {
-
         }
         return comment;
     }

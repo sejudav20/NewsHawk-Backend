@@ -118,18 +118,19 @@ public class UserService {
     }
 
     public void createComment(String articleId, Comment comment) throws CreationException {
-        uDao.createComment(articleId,comment);
+        Comment c= new Comment(comment.getUsername(),articleId,comment.getContent(),comment.getReplies(),comment.isReply(),comment.getUserIconId(),IdService.getTimeStamp());
+        uDao.createComment(articleId,c);
     }
 
     public void updateComment(String articleId, Comment comment) {
         uDao.updateComment(articleId,comment);
     }
 
-    public void deleteComment(String articleId, String user, String timestamp) {
+    public void deleteComment(String articleId, String user, long timestamp) {
         uDao.deleteComment(articleId,user,timestamp);
     }
 
-    public void getComment(String articleId, String user, String timestamp) {
-        uDao.getComment(articleId,user,timestamp);
+    public Comment getComment(String articleId, String user, long timestamp) {
+        return uDao.getComment(articleId,user,timestamp);
     }
 }
