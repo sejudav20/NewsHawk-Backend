@@ -141,20 +141,6 @@ public class AWSUserDAO implements UserDAO{
         return null;
     }
 
-    @Override
-    public void addSub(String username, String author) {
-
-    }
-
-    @Override
-    public void addLiked(String username, String author, String articleName) {
-
-    }
-
-    @Override
-    public void addFollow(String username, String author) {
-
-    }
 
     @Override
     public void updateUserContent(UserContent userContent) {
