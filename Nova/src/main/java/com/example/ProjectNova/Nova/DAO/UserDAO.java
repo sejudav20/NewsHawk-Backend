@@ -30,12 +30,6 @@ public interface UserDAO {
 
     List<Article> getReadLater(String userId);
 
-    void addSub(String username, String author);
-
-    void addLiked(String username, String author, String articleName);
-
-    void addFollow(String username, String author);
-
     void updateUserContent(UserContent userContent);
 
     void createComment(String articleId, Comment comment) throws CreationException;
