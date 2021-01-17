@@ -45,7 +45,10 @@ public class UserService {
     public List<Article> getReadLater(String userId){
         return uDao.getReadLater(userId);
     }
-    public User createUser(User user) throws CreationException {
+    public User createUser(User user) throws CreationException, UsernameAlreadyExistException {
+        if (uDao.usernameExists(user.getName())) {
+            throw new UsernameAlreadyExistException();
+        }
         String id = IdService.getId();
         User newUser = new User(user.getName(), user.getPassword(), id, user.getProfilePic(),
                 new ArrayList<String>(),new ArrayList<String>() ,new ArrayList<String>(), IdService.getTimeStamp());
