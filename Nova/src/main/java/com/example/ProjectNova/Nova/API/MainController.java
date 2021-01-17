@@ -40,7 +40,7 @@ public class MainController {
 
     //////User stuff/////////////////////////////////////////
     @PostMapping(path = "/createUser")
-    public User createUser(@RequestBody User user) throws CreationException {
+    public User createUser(@RequestBody User user) throws CreationException, UsernameAlreadyExistException {
         return userS.createUser(user);
     }
     @GetMapping(path = "/getUserThumbnail/{name}")
