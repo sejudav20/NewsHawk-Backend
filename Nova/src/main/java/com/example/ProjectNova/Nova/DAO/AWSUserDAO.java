@@ -133,7 +133,7 @@ public class AWSUserDAO implements UserDAO{
         }
     }
     public boolean usernameExists(String name){
-        return false;
+        return !(getUser(name)==null);
     }
 
     @Override
