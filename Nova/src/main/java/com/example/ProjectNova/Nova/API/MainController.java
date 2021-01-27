@@ -1,9 +1,6 @@
 package com.example.ProjectNova.Nova.API;
 
-import com.example.ProjectNova.Nova.Errors.AuthenticationException;
-import com.example.ProjectNova.Nova.Errors.CreationException;
-import com.example.ProjectNova.Nova.Errors.UserDoesNotExistException;
-import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
+import com.example.ProjectNova.Nova.Errors.*;
 import com.example.ProjectNova.Nova.Model.*;
 import com.example.ProjectNova.Nova.Service.CreatorService;
 import com.example.ProjectNova.Nova.Service.PhotoStorageService;
@@ -35,6 +32,7 @@ public class MainController {
         this.userS = userService;
         this.photoS = photoS;
     }
+
     //////User stuff/////////////////////////////////////////
     @PostMapping(path = "/createUser")
     public User createUser(@RequestBody User user) throws CreationException, UsernameAlreadyExistException {
@@ -42,8 +40,8 @@ public class MainController {
     }
 
     @GetMapping(path = "/getUserThumbnail/{name}")
-    public File getUserThumbnail(@PathVariable("name")String user){
-     return   photoS.getProfileThumbnail(user);
+    public File getUserThumbnail(@PathVariable("name") String user) {
+        return photoS.getProfileThumbnail(user);
     }
 
     @DeleteMapping(path = "/deleteUser/{name}")
@@ -91,21 +89,21 @@ public class MainController {
 
     ///ReadList editing//////////////////////////////////////////////////////
     @PostMapping(path = "/createReadList/{username}/{name}")
-    public void createReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
-        creatorS.createReadList(userName, name, new ArrayList<String>(),new ArrayList<String>());
+    public void createReadList(@PathVariable("username") String userName, @PathVariable("name") String name) {
+        creatorS.createReadList(userName, name, new ArrayList<String>(), new ArrayList<String>());
     }
 
     @GetMapping(path = "/getReadList/{username}/{name}")
-    public ReadList getReadList(@PathVariable("username")String userName, @PathVariable("name")String name) throws CreationException {
-       ReadList r=creatorS.getReadList(userName,name);
-       return r;
+    public ReadList getReadList(@PathVariable("username") String userName, @PathVariable("name") String name) throws CreationException {
+        ReadList r = creatorS.getReadList(userName, name);
+        return r;
     }
 
     @PostMapping(path = "/addToReadList/{username}/{name}")
-    public void addToReadList(@PathVariable("username")String userName, @PathVariable("name")String name, @RequestBody()List<List<String>> articleNameAuthor) {
-        List<String> articleName=new ArrayList<>();
-        List<String> authorName=new ArrayList<>();
-        for(List<String> list:articleNameAuthor){
+    public void addToReadList(@PathVariable("username") String userName, @PathVariable("name") String name, @RequestBody() List<List<String>> articleNameAuthor) {
+        List<String> articleName = new ArrayList<>();
+        List<String> authorName = new ArrayList<>();
+        for (List<String> list : articleNameAuthor) {
             articleName.add(list.get(0));
             authorName.add(list.get(1));
         }
@@ -113,10 +111,10 @@ public class MainController {
     }
 
     @PostMapping(path = "/removeFromReadList/{username}/{name}")
-    public void removeFromReadList(@PathVariable("username")String userName, @PathVariable("name")String name,@RequestBody List<List<String>> articleNameAuthor) {
-        List<String> articleName=new ArrayList<>();
-        List<String> authorName=new ArrayList<>();
-        for(List<String> list:articleNameAuthor){
+    public void removeFromReadList(@PathVariable("username") String userName, @PathVariable("name") String name, @RequestBody List<List<String>> articleNameAuthor) {
+        List<String> articleName = new ArrayList<>();
+        List<String> authorName = new ArrayList<>();
+        for (List<String> list : articleNameAuthor) {
             articleName.add(list.get(0));
             authorName.add(list.get(1));
         }
@@ -124,7 +122,7 @@ public class MainController {
     }
 
     @DeleteMapping(path = "/deleteReadList/{username}/{name}")
-    public void deleteReadList(@PathVariable("username")String userName, @PathVariable("name")String name) {
+    public void deleteReadList(@PathVariable("username") String userName, @PathVariable("name") String name) {
         creatorS.deleteReadList(userName, name);
     }
 
@@ -134,83 +132,84 @@ public class MainController {
     }
 
     @GetMapping(path = "/getArticle/{name}/{author}")
-    public Article getArticle(@PathVariable("name")String name, @PathVariable("author")String author) throws CreationException {
-       return  creatorS.getArticleByName(name,author);
+    public Article getArticle(@PathVariable("name") String name, @PathVariable("author") String author) throws CreationException {
+        return creatorS.getArticleByName(name, author);
     }
 
-    @PostMapping(path="/addArticleImages/{author}/{name}")
-    public void addArticleImages(@PathVariable("author")String author,@PathVariable("name")String name,@RequestParam("images") MultipartFile[] images) {
+    @PostMapping(path = "/addArticleImages/{author}/{name}")
+    public void addArticleImages(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("images") MultipartFile[] images) {
         try {
-            photoS.addArticleImages(author,name,images);
+            photoS.addArticleImages(author, name, images);
         } catch (IOException e) {
             e.printStackTrace();
         }
 
     }
 
-    @PostMapping(path="/setArticleThumbnail/{author}/{name}")
-    public void setArticleThumbnail(@PathVariable("author")String author,@PathVariable("name")String name,@RequestParam("Thumbnail") MultipartFile thumbnail) {
+    @PostMapping(path = "/setArticleThumbnail/{author}/{name}")
+    public void setArticleThumbnail(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("Thumbnail") MultipartFile thumbnail) {
         try {
-            photoS.addArticleThumbnail(author,name,thumbnail);
+            photoS.addArticleThumbnail(author, name, thumbnail);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @GetMapping(path="/getArticleThumbnail/{author}/{name}")
-    public @ResponseBody File getArticleThumbNail(@PathVariable("author")String author,@PathVariable("name")String name) throws IOException {
-        return photoS.getArticleThumbnail(author,name);
+    @GetMapping(path = "/getArticleThumbnail/{author}/{name}")
+    public @ResponseBody
+    File getArticleThumbNail(@PathVariable("author") String author, @PathVariable("name") String name) throws IOException {
+        return photoS.getArticleThumbnail(author, name);
     }
 
-    @DeleteMapping(path="/deleteArticle/{author}/{name}")
-    public void deleteArticle(@PathVariable("author")String author,@PathVariable("name")String name){
-        creatorS.deleteArticle(author,name);
-        photoS.deleteAllImagesForArticle(author,name);
+    @DeleteMapping(path = "/deleteArticle/{author}/{name}")
+    public void deleteArticle(@PathVariable("author") String author, @PathVariable("name") String name) {
+        creatorS.deleteArticle(author, name);
+        photoS.deleteAllImagesForArticle(author, name);
     }
 
-    @PostMapping(path="/updateArticle/{author}/{originalName}")
-    public void updateArticle(@PathVariable("author")String author,@PathVariable("originalName")String originalName,@RequestBody Article newArticle){
-        creatorS.updateArticle(author,originalName,newArticle);
+    @PostMapping(path = "/updateArticle/{author}/{originalName}")
+    public void updateArticle(@PathVariable("author") String author, @PathVariable("originalName") String originalName, @RequestBody Article newArticle) {
+        creatorS.updateArticle(author, originalName, newArticle);
     }
 
-    @PostMapping(path="/addLike/{username}/{author}/{name}")
-    public void likeAnArticle(@PathVariable("username")String username,
-                              @PathVariable("author")String author,@PathVariable("name")String articleName){
-        userS.likeAnArticle(username,author,articleName);
+    @PostMapping(path = "/addLike/{username}/{articleName}/{author}")
+    public void likeAnArticle(@PathVariable("username") String username, @PathVariable("articleName") String articleName,
+                              @PathVariable("author") String author) {
+        userS.likeAnArticle(username, articleName, author);
     }
 
-    @GetMapping(path="/getArticleComments/{articleId}")
-    public List<Comment> getArticleComments(@PathVariable("articleId")String articleId){
+    @GetMapping(path = "/getArticleComments/{articleId}")
+    public List<Comment> getArticleComments(@PathVariable("articleId") String articleId) {
         return creatorS.getArticleComments(articleId);
     }
 
-    @PostMapping(path="/createComment/{articleId}")
-    public void createComment(@PathVariable("articleId")String articleId,@RequestBody Comment comment) throws CreationException {
-        userS.createComment(articleId,comment);
+    @PostMapping(path = "/createComment/{articleId}")
+    public void createComment(@PathVariable("articleId") String articleId, @RequestBody Comment comment) throws CreationException {
+        userS.createComment(articleId, comment);
     }
 
-    @PostMapping(path="/updateComment/{articleId}/{user}/{timestamp}")
-    public void updateComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")String timestamp,@RequestBody Comment comment){
-        userS.updateComment(articleId,comment);
+    @PostMapping(path = "/updateComment/{articleId}/{user}/{timestamp}")
+    public void updateComment(@PathVariable("articleId") String articleId, @PathVariable("user") String user, @PathVariable("timestamp") String timestamp, @RequestBody Comment comment) {
+        userS.updateComment(articleId, comment);
     }
 
-    @DeleteMapping(path="/deleteComment/{articleId}/{user}/{timestamp}")
-    public void deleteComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")long timestamp){
-        userS.deleteComment(articleId,user,timestamp);
+    @DeleteMapping(path = "/deleteComment/{articleId}/{user}/{timestamp}")
+    public void deleteComment(@PathVariable("articleId") String articleId, @PathVariable("user") String user, @PathVariable("timestamp") long timestamp) {
+        userS.deleteComment(articleId, user, timestamp);
     }
 
-    @GetMapping(path="/getComment/{articleId}/{user}/{timestamp}")
-    public Comment getComment(@PathVariable("articleId")String articleId,@PathVariable("user")String user,@PathVariable("timestamp")long timestamp){
-        return userS.getComment(articleId,user,timestamp);
+    @GetMapping(path = "/getComment/{articleId}/{user}/{timestamp}")
+    public Comment getComment(@PathVariable("articleId") String articleId, @PathVariable("user") String user, @PathVariable("timestamp") long timestamp) {
+        return userS.getComment(articleId, user, timestamp);
     }
 
-    @PostMapping(path="/addSubscribe/{username}/{author}")
-    public void subscribe(@PathVariable("username")String username,@PathVariable("author")String author){
-        userS.subscribe(username,author);
+    @PostMapping(path = "/addSubscribe/{username}/{author}")
+    public void subscribe(@PathVariable("username") String username, @PathVariable("author") String author) throws CopyException {
+        userS.subscribe(username, author);
     }
 
-    @PostMapping(path="/addFollow/{username}/{author}")
-    public void follow(@PathVariable("username")String username,@PathVariable("author")String author){
-        userS.follow(username,author);
+    @PostMapping(path = "/addFollow/{username}/{author}")
+    public void follow(@PathVariable("username") String username, @PathVariable("author") String author) throws CopyException {
+        userS.follow(username, author);
     }
 }

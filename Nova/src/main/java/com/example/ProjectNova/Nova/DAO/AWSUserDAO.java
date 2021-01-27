@@ -9,22 +9,24 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.*;
+
 @Repository("UserDao")
-public class AWSUserDAO implements UserDAO{
-    public void createTable(DynamoDbTable d){
+public class AWSUserDAO implements UserDAO {
+    public void createTable(DynamoDbTable d) {
         d.createTable();
     }
+
     @Override
     public User createUser(User user) throws CreationException {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<User> uTable = uClient.table("Users", TableSchema.fromBean(User.class));
-        try{
+        try {
             uTable.putItem(user);
-        }catch(ResourceNotFoundException r){
+        } catch (ResourceNotFoundException r) {
             createTable(uTable);
             createUser(user);
-        }catch(DynamoDbException de) {
-          de.printStackTrace();
+        } catch (DynamoDbException de) {
+            de.printStackTrace();
             throw new CreationException();
         }
         return user;
@@ -34,12 +36,12 @@ public class AWSUserDAO implements UserDAO{
     public UserContent createUserContent(UserContent userContent) throws CreationException {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<UserContent> uTable = uClient.table("UserContents", TableSchema.fromBean(UserContent.class));
-        try{
+        try {
             uTable.putItem(userContent);
-        }catch(ResourceNotFoundException r) {
+        } catch (ResourceNotFoundException r) {
             createTable(uTable);
             createUserContent(userContent);
-        }catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             de.printStackTrace();
             throw new CreationException();
         }
@@ -47,7 +49,7 @@ public class AWSUserDAO implements UserDAO{
     }
 
     @Override
-    public User getUser(String name){
+    public User getUser(String name) {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<User> uTable = uClient.table("Users", TableSchema.fromBean(User.class));
         Key key = Key.builder()
@@ -56,7 +58,7 @@ public class AWSUserDAO implements UserDAO{
         User u;
         try {
             u = uTable.getItem(key);
-        } catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             throw de;
         }
         return u;
@@ -65,14 +67,14 @@ public class AWSUserDAO implements UserDAO{
     @Override
     public UserContent getUserContent(String userContentName) {
         DynamoDbEnhancedClient ucClient = AWSInitializer.getEnhancedClient();
-        DynamoDbTable<UserContent> ucTable = ucClient.table("UserContents",TableSchema.fromBean(UserContent.class));
+        DynamoDbTable<UserContent> ucTable = ucClient.table("UserContents", TableSchema.fromBean(UserContent.class));
         Key key = Key.builder()
                 .partitionValue(userContentName)
                 .build();
         UserContent uc;
-        try{
+        try {
             uc = ucTable.getItem(key);
-        }catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             throw de;
         }
         return uc;
@@ -93,13 +95,13 @@ public class AWSUserDAO implements UserDAO{
         String password = "";
         try {
             Map<String, AttributeValue> results = ddc.getItem(gir).item();
-            if(!results.isEmpty()) {
+            if (!results.isEmpty()) {
 
                 System.out.println(results);
 
                 password = results.get("password").s();
             }
-        }catch (DynamoDbException e){
+        } catch (DynamoDbException e) {
             throw e;
         }
         return password;
@@ -109,31 +111,33 @@ public class AWSUserDAO implements UserDAO{
     public void updateUser(User user) {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<User> uTable = uClient.table("Users", TableSchema.fromBean(User.class));
-        try{
+        try {
             uTable.updateItem(user);
-        }catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             throw de;
         }
     }
+
     @Override
     public void deleteUser(String userName) {
         DynamoDbClient ddc = AWSInitializer.getClient();
         Map<String, AttributeValue> keyMap = new HashMap<>();
-        keyMap.put("name",AttributeValue.builder()
+        keyMap.put("name", AttributeValue.builder()
                 .s(userName)
                 .build());
         DeleteItemRequest dir = DeleteItemRequest.builder()
                 .tableName("Users")
                 .key(keyMap)
                 .build();
-        try{
+        try {
             ddc.deleteItem(dir);
-        }catch (DynamoDbException de){
+        } catch (DynamoDbException de) {
             throw de;
         }
     }
-    public boolean usernameExists(String name){
-        return !(getUser(name)==null);
+
+    public boolean usernameExists(String name) {
+        return !(getUser(name) == null);
     }
 
     @Override
@@ -146,9 +150,9 @@ public class AWSUserDAO implements UserDAO{
     public void updateUserContent(UserContent userContent) {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<UserContent> uTable = uClient.table("UserContents", TableSchema.fromBean(UserContent.class));
-        try{
+        try {
             uTable.updateItem(userContent);
-        }catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             throw de;
         }
     }
@@ -158,13 +162,13 @@ public class AWSUserDAO implements UserDAO{
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
 
-        try{
+        try {
             comment.setId(articleId);
             uTable.putItem(comment);
-        }catch(ResourceNotFoundException r) {
+        } catch (ResourceNotFoundException r) {
             createTable(uTable);
-            createComment(articleId,comment);
-        }catch(DynamoDbException de) {
+            createComment(articleId, comment);
+        } catch (DynamoDbException de) {
             System.out.println(de);
 
             throw new CreationException();
@@ -175,10 +179,10 @@ public class AWSUserDAO implements UserDAO{
     public void updateComment(String articleId, Comment comment) {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
-        try{
+        try {
             comment.setId(articleId);
             uTable.updateItem(comment);
-        }catch(DynamoDbException de) {
+        } catch (DynamoDbException de) {
             throw de;
         }
     }
@@ -192,9 +196,9 @@ public class AWSUserDAO implements UserDAO{
                 .build();
         Comment c;
 
-        try{
-            c=uTable.deleteItem(key);
-        }catch(DynamoDbException de) {
+        try {
+            c = uTable.deleteItem(key);
+        } catch (DynamoDbException de) {
             throw de;
         }
     }
@@ -207,10 +211,10 @@ public class AWSUserDAO implements UserDAO{
                 .partitionValue(articleId).sortValue(timestamp)
                 .build();
         Comment c;
-        try{
+        try {
 
-            c=uTable.getItem(key);
-        }catch(DynamoDbException de) {
+            c = uTable.getItem(key);
+        } catch (DynamoDbException de) {
             throw de;
         }
         return c;

@@ -24,7 +24,7 @@ public class Article {
     private String mainContent;
     private String sources;
     //data and tags for each article
-    private Map<String,List<String>> info;
+    private Map<String, List<String>> info;
     private List<String> comments;
     private int viewCount;
     private int liked;
@@ -34,10 +34,11 @@ public class Article {
     public Article() {
 
     }
+
     public Article(@JsonProperty("title") String title, @JsonProperty("author") String author, @JsonProperty("thumbnailId")
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
-                   @JsonProperty("info") Map<String,List<String>> info, @JsonProperty("comments") List<String> comments,
-                   @JsonProperty("viewCount") int viewCount,@JsonProperty("liked") int liked,@JsonProperty("timeStamp") long timestamp,
+                   @JsonProperty("info") Map<String, List<String>> info, @JsonProperty("comments") List<String> comments,
+                   @JsonProperty("viewCount") int viewCount, @JsonProperty("liked") int liked, @JsonProperty("timeStamp") long timestamp,
                    @JsonProperty("channelIcon") String iconId) {
         //this.id = id!=null?id:this.id;
         this.author = author != null ? author : this.author;
@@ -52,6 +53,7 @@ public class Article {
         this.timestamp = timestamp != 0 ? timestamp : this.timestamp;
         this.iconId = iconId != null ? iconId : this.iconId;
     }
+
     public void merge(Article article) {
         //this.id = id!=null?id:this.id;
         this.author = author == null ? article.author : this.author;
@@ -107,6 +109,7 @@ public class Article {
     public void setThumbnailId(String thumbnailId) {
         this.thumbnailId = thumbnailId;
     }
+
     @DynamoDbPartitionKey
     public String getTitle() {
         return title;
@@ -132,11 +135,11 @@ public class Article {
         this.sources = sources;
     }
 
-    public Map<String,List<String>> getInfo() {
+    public Map<String, List<String>> getInfo() {
         return info;
     }
 
-    public void setInfo(Map<String,List<String>> info) {
+    public void setInfo(Map<String, List<String>> info) {
         this.info = info;
     }
 

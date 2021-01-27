@@ -89,6 +89,14 @@ public UserContent(){
   return percentFollowers;
  }
 
+ public int getSubscribers() {
+  return subscribers;
+ }
+
+ public void setSubscribers(int subscribers) {
+  this.subscribers = subscribers;
+ }
+
  public void setPercentFollowers(double percentFollowers) {
   this.percentFollowers = percentFollowers;
  }

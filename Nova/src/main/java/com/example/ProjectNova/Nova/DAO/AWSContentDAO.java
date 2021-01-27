@@ -1,5 +1,6 @@
 package com.example.ProjectNova.Nova.DAO;
 
+import com.example.ProjectNova.Nova.Errors.CopyException;
 import com.example.ProjectNova.Nova.Errors.CreationException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.ArticleInfo;
@@ -16,6 +17,7 @@ import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.*;
 
 import java.util.*;
+
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
     public DynamoDbClient getDynamo() {
@@ -64,13 +66,13 @@ public class AWSContentDAO implements ContentDAO {
         String[] s = attributeName.split(",");
         try {
             Map<String, AttributeValue> results = ddc.getItem(gir).item();
-            System.out.println(results + "    hi");
+
             if (!results.isEmpty()) {
-                System.out.println(results);
+
                 for (String e : s) {
                     password.add(results.get(e).ss());
                 }
-                System.out.println(password);
+
                 return password;
             }
         } catch (DynamoDbException e) {
@@ -86,7 +88,7 @@ public class AWSContentDAO implements ContentDAO {
         DynamoDbClient dy = AWSInitializer.getClient();
         HashMap<String, AttributeValueUpdate> updatedValues = new HashMap();
         HashMap<String, AttributeValue> keys = new HashMap();
-        System.out.println("name " + userId);
+
         keys.put("name", AttributeValue.builder().s(userId).build());
         List<String> readListNames = getList(keys, "readLists", "UserContents").get(0);
         ArrayList<String> aList = new ArrayList<>();
@@ -247,27 +249,32 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public void addLike(String author, String articleName, String username) {
+    public void addLike(String username, String articleName, String author) {
         DynamoDbClient dy = AWSInitializer.getClient();
         HashMap<String, AttributeValueUpdate> updatedValues =
                 new HashMap<String, AttributeValueUpdate>();
-        // Update the column specified by name with updatedVal
-        updatedValues.put("like", AttributeValueUpdate.builder()
+
+        updatedValues.put("liked", AttributeValueUpdate.builder()
                 .value(AttributeValue.builder().n("1").build())
                 .action(AttributeAction.ADD)
                 .build());
-        HashMap<String, AttributeValueUpdate> updatedValues2 =
-                new HashMap<>();
+
         HashMap<String, AttributeValue> keys =
                 new HashMap();
         keys.put("title", AttributeValue.builder().s(articleName).build());
         keys.put("author", AttributeValue.builder().s(author).build());
         UpdateItemRequest u = UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("Articles").build();
         dy.updateItem(u);
+        List<String> articles = new ArrayList();
+        List<String> authors = new ArrayList();
+        articles.add(articleName);
+        authors.add(author);
+        addArticleToReadList(username, "Liked", articles, authors);
+
     }
 
     @Override
-    public void addFollow(String author) {
+    public void addFollow(String author, String username) throws CopyException {
         DynamoDbClient dy = AWSInitializer.getClient();
         HashMap<String, AttributeValueUpdate> updatedValues = new HashMap();
         updatedValues.put("followers", AttributeValueUpdate.builder()
@@ -277,15 +284,35 @@ public class AWSContentDAO implements ContentDAO {
         HashMap<String, AttributeValue> keys =
                 new HashMap();
         keys.put("name", AttributeValue.builder().s(author).build());
-        UpdateItemRequest u = UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("usercontent")
+        UpdateItemRequest u = UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("UserContents")
                 .build();
-        dy.updateItem(u);
+
+        ////add author to user follow list
+        HashMap<String, AttributeValue> keyToGet = new HashMap<>();
+        keyToGet.put("name", AttributeValue.builder().s(username).build());
+
+        List<List<String>> lists = getList(keyToGet, "following", "Users");
+        List<String> articleAuthors = new ArrayList<>(lists.get(0));
+        boolean exists = articleAuthors.contains(author);
+        articleAuthors.add(author);
+        HashMap<String, AttributeValueUpdate> uMap = new HashMap();
+        uMap.put("following", AttributeValueUpdate.builder().value(AttributeValue.builder().
+                ss(articleAuthors).build()).action(AttributeAction.PUT).build());
+
+        UpdateItemRequest u2 = UpdateItemRequest.builder().tableName("Users").key(keyToGet).attributeUpdates(uMap)
+                .build();
+        if (!exists) {
+
+            dy.updateItem(u2);
+            dy.updateItem(u);
+        } else {
+            throw new CopyException();
+        }
+
     }
 
     public void addArticleToReadList(String user, String name, List<String> articleName, List<String> ids) {
         DynamoDbClient dy = AWSInitializer.getClient();
-        DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
-        DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
         HashMap<String, AttributeValue> keyToGet = new HashMap<>();
         keyToGet.put("name", AttributeValue.builder().s(name).build());
         keyToGet.put("author", AttributeValue.builder().s(user).build());
@@ -325,7 +352,7 @@ public class AWSContentDAO implements ContentDAO {
         dy.updateItem(u);
     }
 
-    public void addSub(String author) {
+    public void addSub(String author, String username) throws CopyException {
         DynamoDbClient dy = AWSInitializer.getClient();
         HashMap<String, AttributeValueUpdate> updatedValues =
                 new HashMap();
@@ -336,8 +363,31 @@ public class AWSContentDAO implements ContentDAO {
         HashMap<String, AttributeValue> keys =
                 new HashMap();
         keys.put("name", AttributeValue.builder().s(author).build());
-        UpdateItemRequest u = UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("usercontent")
+        UpdateItemRequest u = UpdateItemRequest.builder().attributeUpdates(updatedValues).key(keys).tableName("UserContents")
                 .build();
-        dy.updateItem(u);
+
+        ////add author to user sub list
+        HashMap<String, AttributeValue> keyToGet = new HashMap<>();
+        keyToGet.put("name", AttributeValue.builder().s(username).build());
+
+        List<List<String>> lists = getList(keyToGet, "subscribed", "Users");
+        List<String> articleAuthors = new ArrayList<>(lists.get(0));
+        boolean exists = articleAuthors.contains(author);
+        articleAuthors.add(author);
+        HashMap<String, AttributeValueUpdate> uMap = new HashMap();
+        uMap.put("subscribed", AttributeValueUpdate.builder().value(AttributeValue.builder().
+                ss(articleAuthors).build()).action(AttributeAction.PUT).build());
+
+        UpdateItemRequest u2 = UpdateItemRequest.builder().tableName("Users").key(keyToGet).attributeUpdates(uMap)
+                .build();
+        if (!exists) {
+
+            dy.updateItem(u2);
+            dy.updateItem(u);
+        } else {
+            throw new CopyException();
+        }
+
+
     }
 }

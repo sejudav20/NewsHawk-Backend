@@ -7,6 +7,7 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortK
 
 import java.util.Date;
 import java.util.List;
+
 @DynamoDbBean
 public class Comment {
     /// Class to wrap each comment in
@@ -21,21 +22,23 @@ public class Comment {
     private String userIconId;
 
 
-
     //sortkey
     private long timeStamp;
-    public Comment(){}
-    public Comment(@JsonProperty("username")String username,@JsonProperty("articleId")String articleId,
-                   @JsonProperty("content") String content,@JsonProperty("replies") List<String> replies,
-                   @JsonProperty("isReply")boolean isReply,@JsonProperty("userIconId") String userIconId,
+
+    public Comment() {
+    }
+
+    public Comment(@JsonProperty("username") String username, @JsonProperty("articleId") String articleId,
+                   @JsonProperty("content") String content, @JsonProperty("replies") List<String> replies,
+                   @JsonProperty("isReply") boolean isReply, @JsonProperty("userIconId") String userIconId,
                    @JsonProperty("timeStamp") long timeStamp) {
-        this.username = username!=null?username:this.username;
-        this.id = articleId!=null?articleId:this.id;
-        this.content = content!=null?content:this.content;
-        this.replies = replies!=null?replies:this.replies;
+        this.username = username != null ? username : this.username;
+        this.id = articleId != null ? articleId : this.id;
+        this.content = content != null ? content : this.content;
+        this.replies = replies != null ? replies : this.replies;
         this.isReply = isReply;
-        this.userIconId=userIconId!=null?userIconId:this.userIconId;
-        this.timeStamp = timeStamp!=0?timeStamp:this.timeStamp;
+        this.userIconId = userIconId != null ? userIconId : this.userIconId;
+        this.timeStamp = timeStamp != 0 ? timeStamp : this.timeStamp;
     }
 
     /////////////Getters and setters////////////////////////////////////////////////////////////////////////
@@ -46,6 +49,7 @@ public class Comment {
     public void setUserIconId(String userIconId) {
         this.userIconId = userIconId;
     }
+
     public String getUsername() {
         return username;
     }
@@ -53,6 +57,7 @@ public class Comment {
     public void setUsername(String username) {
         this.username = username;
     }
+
     @DynamoDbPartitionKey
     public String getId() {
         return id;
@@ -85,6 +90,7 @@ public class Comment {
     public void setReply(boolean reply) {
         isReply = reply;
     }
+
     @DynamoDbSortKey
     public long getTimeStamp() {
         return timeStamp;

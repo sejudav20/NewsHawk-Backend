@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.List;
 
 @Repository("PhotoDao")
-public class AWSPhotoDAO implements PhotoDAO{
+public class AWSPhotoDAO implements PhotoDAO {
 
     @Override
     public void setPreferedBucket(String name) {
@@ -15,14 +15,14 @@ public class AWSPhotoDAO implements PhotoDAO{
 
     @Override
     public void uploadFiles(List<File> files, List<String> paths) {
-        for(int i=0; i<files.size(); i++){
-            uploadFile(paths.get(i),files.get(i));
+        for (int i = 0; i < files.size(); i++) {
+            uploadFile(paths.get(i), files.get(i));
         }
     }
 
     @Override
     public void uploadFile(String articleTitle, String author, String name, File f) {
-        uploadFile(author+"/"+articleTitle+"/"+name,f);
+        uploadFile(author + "/" + articleTitle + "/" + name, f);
     }
 
     @Override
