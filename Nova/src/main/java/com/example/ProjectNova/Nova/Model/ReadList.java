@@ -6,23 +6,26 @@ import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbParti
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbSortKey;
 
 import java.util.List;
+
 @DynamoDbBean
 public class ReadList {
     //essentially a wrapper for a list of articles
-   //sort key
+    //sort key
     private String author;
     private List<String> articles;
     private List<String> articleAuthors;
     //primary key
     private String name;
-    public ReadList(){}
 
-    public ReadList(@JsonProperty("author")String author,@JsonProperty("name") String name,
-                    @JsonProperty("articles")List<String> articles,@JsonProperty("articleAuthors")List<String> articleAuthors) {
-        this.author = author!=null?author:this.author;
-        this.articles = articles!=null?articles:this.articles;
-        this.articleAuthors = articleAuthors!=null?articleAuthors:this.articleAuthors;
-        this.name = name!=null?name:this.name;
+    public ReadList() {
+    }
+
+    public ReadList(@JsonProperty("author") String author, @JsonProperty("name") String name,
+                    @JsonProperty("articles") List<String> articles, @JsonProperty("articleAuthors") List<String> articleAuthors) {
+        this.author = author != null ? author : this.author;
+        this.articles = articles != null ? articles : this.articles;
+        this.articleAuthors = articleAuthors != null ? articleAuthors : this.articleAuthors;
+        this.name = name != null ? name : this.name;
 
     }
 
@@ -51,6 +54,7 @@ public class ReadList {
     public void setArticles(List<String> articles) {
         this.articles = articles;
     }
+
     @DynamoDbPartitionKey
     public String getName() {
         return name;

@@ -24,44 +24,47 @@ public class CreatorService {
 
     public Article createArticle(Article article) throws CreationException {
         Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(),
-                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(),IdService.getTimeStamp(),article.getIconId());
+                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), IdService.getTimeStamp(), article.getIconId());
         return cDao.createArticle(newArticle);
     }
 
     public void updateArticle(String author, String originalName, Article article) {
-        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), article.getTimestamp(),article.getIconId());
+        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), article.getTimestamp(), article.getIconId());
 
 
-        cDao.updateArticle(author,originalName,newArticle);
+        cDao.updateArticle(author, originalName, newArticle);
     }
-    public List<Comment> getArticleComments(String articleId){
+
+    public List<Comment> getArticleComments(String articleId) {
         return cDao.getArticleComments(articleId);
     }
 
-    public Article getArticleByName(String name,String author) {
-        return cDao.getArticle(name,author);
+    public Article getArticleByName(String name, String author) {
+        return cDao.getArticle(name, author);
     }
 
-    public void deleteArticle(String name,String author) {
-        cDao.deleteArticle(name,author);
+    public void deleteArticle(String name, String author) {
+        cDao.deleteArticle(name, author);
     }
 
-    public ReadList createReadList(String author,String name,List<String> ids,List<String> authors){
-        return cDao.createReadList(author,new ReadList(author,name,ids,authors));
+    public ReadList createReadList(String author, String name, List<String> ids, List<String> authors) {
+        return cDao.createReadList(author, new ReadList(author, name, ids, authors));
     }
-    public void addArticleToReadlist(String author, String name, List<String> articleName, List<String> articleAuthor){
-        cDao.addArticleToReadList(author,name,articleName,articleAuthor);
+
+    public void addArticleToReadlist(String author, String name, List<String> articleName, List<String> articleAuthor) {
+        cDao.addArticleToReadList(author, name, articleName, articleAuthor);
     }
-    public ReadList getReadList(String userId,String readListId){
-        return cDao.getReadListById(userId,readListId);
+
+    public ReadList getReadList(String userId, String readListId) {
+        return cDao.getReadListById(userId, readListId);
     }
 
 
     public void removeArticleFromReadlist(String userName, String name, List<String> articleName, List<String> authorName) {
-            cDao.removeArticleFromReadlist(userName,name,articleName,authorName);
+        cDao.removeArticleFromReadlist(userName, name, articleName, authorName);
     }
 
     public void deleteReadList(String userName, String name) {
-            cDao.deleteReadList(userName,name);
+        cDao.deleteReadList(userName, name);
     }
 }

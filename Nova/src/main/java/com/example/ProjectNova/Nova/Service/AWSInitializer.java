@@ -29,7 +29,7 @@ public class AWSInitializer {
                 .endpointOverride(URI.create("http://localhost:8000"))
                 .build();
 
-      enhancedClient=DynamoDbEnhancedClient.builder()
+        enhancedClient = DynamoDbEnhancedClient.builder()
                 .dynamoDbClient(client)
                 .build();
     }
@@ -38,9 +38,7 @@ public class AWSInitializer {
         return client;
     }
 
-    public static DynamoDbEnhancedClient getEnhancedClient()
-
-    {
+    public static DynamoDbEnhancedClient getEnhancedClient() {
         return enhancedClient;
     }
 }

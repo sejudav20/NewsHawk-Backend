@@ -6,10 +6,13 @@ import java.sql.Timestamp;
 
 
 public class IdService {
-    public static String getId(){
+    public static String getId() {
         return UUID.randomUUID().toString();
-    };
-    public static long getTimeStamp(){
+    }
+
+    ;
+
+    public static long getTimeStamp() {
         return System.currentTimeMillis();
     }
 }

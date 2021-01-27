@@ -14,18 +14,24 @@ public interface UserDAO {
     //Create
 
     public User createUser(User user) throws CreationException;
+
     public UserContent createUserContent(UserContent userContent) throws CreationException;
 
     //Read
     public User getUser(String name) throws CreationException;
+
     public UserContent getUserContent(String user) throws CreationException;
+
     public String getPassword(String username) throws CreationException;
+
     public List<Article> getUserHistory(String userId);
 
     //Update
     public void updateUser(User user);
+
     //Delete
     public void deleteUser(String id);
+
     public boolean usernameExists(String name);
 
     List<Article> getReadLater(String userId);
