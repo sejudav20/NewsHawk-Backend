@@ -65,7 +65,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/getUserContent/{name}")
-    public UserContent getUserContent(@PathVariable("name") String name) throws CreationException {
+    public UserContent getUserContent(@PathVariable("name") String name) throws CreationException, ObjectDoesNotExistException {
         return userS.getUserContent(name);
     }
 
@@ -94,7 +94,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/getReadList/{username}/{name}")
-    public ReadList getReadList(@PathVariable("username") String userName, @PathVariable("name") String name) throws CreationException {
+    public ReadList getReadList(@PathVariable("username") String userName, @PathVariable("name") String name) throws CreationException, ObjectDoesNotExistException {
         ReadList r = creatorS.getReadList(userName, name);
         return r;
     }
@@ -132,7 +132,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/getArticle/{name}/{author}")
-    public Article getArticle(@PathVariable("name") String name, @PathVariable("author") String author) throws CreationException {
+    public Article getArticle(@PathVariable("name") String name, @PathVariable("author") String author) throws CreationException, ObjectDoesNotExistException {
         return creatorS.getArticleByName(name, author);
     }
 
@@ -199,7 +199,7 @@ public class MainController {
     }
 
     @GetMapping(path = "/getComment/{articleId}/{user}/{timestamp}")
-    public Comment getComment(@PathVariable("articleId") String articleId, @PathVariable("user") String user, @PathVariable("timestamp") long timestamp) {
+    public Comment getComment(@PathVariable("articleId") String articleId, @PathVariable("user") String user, @PathVariable("timestamp") long timestamp) throws ObjectDoesNotExistException {
         return userS.getComment(articleId, user, timestamp);
     }
 

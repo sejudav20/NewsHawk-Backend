@@ -1,6 +1,7 @@
 package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.ObjectDoesNotExistException;
 import com.example.ProjectNova.Nova.Model.*;
 import com.example.ProjectNova.Nova.Service.AWSInitializer;
 import org.springframework.stereotype.Repository;
@@ -61,11 +62,12 @@ public class AWSUserDAO implements UserDAO {
         } catch (DynamoDbException de) {
             throw de;
         }
+
         return u;
     }
 
     @Override
-    public UserContent getUserContent(String userContentName) {
+    public UserContent getUserContent(String userContentName) throws ObjectDoesNotExistException {
         DynamoDbEnhancedClient ucClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<UserContent> ucTable = ucClient.table("UserContents", TableSchema.fromBean(UserContent.class));
         Key key = Key.builder()
@@ -76,6 +78,9 @@ public class AWSUserDAO implements UserDAO {
             uc = ucTable.getItem(key);
         } catch (DynamoDbException de) {
             throw de;
+        }
+        if (uc == null){
+            throw new ObjectDoesNotExistException();
         }
         return uc;
     }
@@ -204,7 +209,7 @@ public class AWSUserDAO implements UserDAO {
     }
 
     @Override
-    public Comment getComment(String articleId, String user, long timestamp) {
+    public Comment getComment(String articleId, String user, long timestamp) throws ObjectDoesNotExistException {
         DynamoDbEnhancedClient uClient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Comment> uTable = uClient.table("Comments", TableSchema.fromBean(Comment.class));
         Key key = Key.builder()
@@ -216,6 +221,9 @@ public class AWSUserDAO implements UserDAO {
             c = uTable.getItem(key);
         } catch (DynamoDbException de) {
             throw de;
+        }
+        if(c==null){
+            throw new ObjectDoesNotExistException();
         }
         return c;
     }

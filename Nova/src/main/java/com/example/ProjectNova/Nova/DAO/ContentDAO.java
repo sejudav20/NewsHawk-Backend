@@ -2,6 +2,7 @@ package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Errors.CopyException;
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.ObjectDoesNotExistException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.ArticleInfo;
 import com.example.ProjectNova.Nova.Model.Comment;
@@ -22,11 +23,11 @@ public interface ContentDAO {
     public ArticleInfo createArticleInfo(String articleId, String info);
 
     //Read
-    public Article getArticle(String articleName, String author);
+    public Article getArticle(String articleName, String author) throws ObjectDoesNotExistException;
 
     ;
 
-    public ReadList getReadListById(String userId, String name);
+    public ReadList getReadListById(String userId, String name) throws ObjectDoesNotExistException;
 
     public void addArticleToReadList(String author, String name, List<String> articleName, List<String> ids);
 

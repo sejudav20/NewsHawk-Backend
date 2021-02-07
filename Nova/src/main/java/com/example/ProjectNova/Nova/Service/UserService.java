@@ -4,10 +4,7 @@ import com.example.ProjectNova.Nova.DAO.AWSContentDAO;
 import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
 import com.example.ProjectNova.Nova.DAO.ContentDAO;
 import com.example.ProjectNova.Nova.DAO.UserDAO;
-import com.example.ProjectNova.Nova.Errors.AuthenticationException;
-import com.example.ProjectNova.Nova.Errors.CopyException;
-import com.example.ProjectNova.Nova.Errors.CreationException;
-import com.example.ProjectNova.Nova.Errors.UsernameAlreadyExistException;
+import com.example.ProjectNova.Nova.Errors.*;
 import com.example.ProjectNova.Nova.Model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,7 +38,7 @@ public class UserService {
         return cDao.getArticleComments(articleId);
     }
 
-    public Article getArticle(String article, String author) {
+    public Article getArticle(String article, String author) throws ObjectDoesNotExistException {
         return cDao.getArticle(article, author);
     }
 
@@ -70,7 +67,7 @@ public class UserService {
         return uDao.createUser(newUser);
     }
 
-    public UserContent getUserContent(String name) throws CreationException {
+    public UserContent getUserContent(String name) throws CreationException, ObjectDoesNotExistException {
         return uDao.getUserContent(name);
     }
 
@@ -140,7 +137,7 @@ public class UserService {
         uDao.deleteComment(articleId, user, timestamp);
     }
 
-    public Comment getComment(String articleId, String user, long timestamp) {
+    public Comment getComment(String articleId, String user, long timestamp) throws ObjectDoesNotExistException {
         return uDao.getComment(articleId, user, timestamp);
     }
 }

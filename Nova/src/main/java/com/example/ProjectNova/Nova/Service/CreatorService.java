@@ -3,6 +3,7 @@ package com.example.ProjectNova.Nova.Service;
 import com.example.ProjectNova.Nova.DAO.AWSContentDAO;
 import com.example.ProjectNova.Nova.DAO.AWSUserDAO;
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.ObjectDoesNotExistException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.ReadList;
@@ -39,7 +40,7 @@ public class CreatorService {
         return cDao.getArticleComments(articleId);
     }
 
-    public Article getArticleByName(String name, String author) {
+    public Article getArticleByName(String name, String author) throws ObjectDoesNotExistException {
         return cDao.getArticle(name, author);
     }
 
@@ -55,7 +56,7 @@ public class CreatorService {
         cDao.addArticleToReadList(author, name, articleName, articleAuthor);
     }
 
-    public ReadList getReadList(String userId, String readListId) {
+    public ReadList getReadList(String userId, String readListId) throws ObjectDoesNotExistException {
         return cDao.getReadListById(userId, readListId);
     }
 
