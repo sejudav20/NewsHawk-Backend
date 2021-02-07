@@ -1,6 +1,7 @@
 package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.ObjectDoesNotExistException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.Comment;
 import com.example.ProjectNova.Nova.Model.User;
@@ -20,7 +21,7 @@ public interface UserDAO {
     //Read
     public User getUser(String name) throws CreationException;
 
-    public UserContent getUserContent(String user) throws CreationException;
+    public UserContent getUserContent(String user) throws CreationException, ObjectDoesNotExistException;
 
     public String getPassword(String username) throws CreationException;
 
@@ -44,5 +45,5 @@ public interface UserDAO {
 
     void deleteComment(String articleId, String user, long timestamp);
 
-    Comment getComment(String articleId, String user, long timestamp);
+    Comment getComment(String articleId, String user, long timestamp) throws ObjectDoesNotExistException;
 }

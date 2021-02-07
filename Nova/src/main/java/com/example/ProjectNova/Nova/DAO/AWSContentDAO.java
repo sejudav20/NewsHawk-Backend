@@ -2,6 +2,7 @@ package com.example.ProjectNova.Nova.DAO;
 
 import com.example.ProjectNova.Nova.Errors.CopyException;
 import com.example.ProjectNova.Nova.Errors.CreationException;
+import com.example.ProjectNova.Nova.Errors.ObjectDoesNotExistException;
 import com.example.ProjectNova.Nova.Model.Article;
 import com.example.ProjectNova.Nova.Model.ArticleInfo;
 import com.example.ProjectNova.Nova.Model.Comment;
@@ -129,7 +130,7 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
-    public Article getArticle(String articleName, String author) {
+    public Article getArticle(String articleName, String author) throws ObjectDoesNotExistException {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<Article> atable = eclient.table("Articles", TableSchema.fromBean(Article.class));
         Key key = Key.builder()
@@ -137,11 +138,14 @@ public class AWSContentDAO implements ContentDAO {
                 .sortValue(author)
                 .build();
         Article a = atable.getItem(key);
+        if(a==null){
+            throw new ObjectDoesNotExistException();
+        }
         return a;
     }
 
     @Override
-    public ReadList getReadListById(String userId, String name) {
+    public ReadList getReadListById(String userId, String name) throws ObjectDoesNotExistException {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));
         Key key = Key.builder()
@@ -149,6 +153,9 @@ public class AWSContentDAO implements ContentDAO {
                 .sortValue(userId)
                 .build();
         ReadList r = atable.getItem(key);
+        if(r==null){
+            throw new ObjectDoesNotExistException();
+        }
         return r;
     }
 
@@ -245,6 +252,7 @@ public class AWSContentDAO implements ContentDAO {
             Comment comment = it.next();
             a.add(comment);
         }
+
         return a;
     }
 
