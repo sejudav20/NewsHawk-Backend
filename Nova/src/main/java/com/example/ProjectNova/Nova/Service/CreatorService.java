@@ -25,12 +25,15 @@ public class CreatorService {
 
     public Article createArticle(Article article) throws CreationException {
         Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(),
-                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), IdService.getTimeStamp(), article.getIconId());
+                article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), IdService.getTimeStamp(), article.getIconId(), article.isPublished());
         return cDao.createArticle(newArticle);
     }
 
     public void updateArticle(String author, String originalName, Article article) {
-        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(), article.getMainContent(), article.getSources(), article.getInfo(), article.getComments(), article.getViewCount(), article.getLiked(), article.getTimestamp(), article.getIconId());
+        Article newArticle = new Article(article.getTitle(), article.getAuthor(), article.getThumbnailId(),
+                article.getMainContent(), article.getSources(), article.getInfo(),
+                article.getComments(), article.getViewCount(), article.getLiked(),
+                article.getTimestamp(), article.getIconId(), article.isPublished());
 
 
         cDao.updateArticle(author, originalName, newArticle);

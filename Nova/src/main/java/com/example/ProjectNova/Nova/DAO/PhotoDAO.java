@@ -1,16 +1,18 @@
 package com.example.ProjectNova.Nova.DAO;
 
+
+
 import java.io.File;
 import java.util.List;
 
 public interface PhotoDAO {
     public void setPreferedBucket(String name);
 
-    public void uploadFiles(List<File> files, List<String> paths);
+    public List<String> uploadFiles(List<File> files, List<String> paths);
 
-    public void uploadFile(String articleTitle, String author, String name, File f);
+    public String uploadFile(String articleTitle, String author, String name, File f);
 
-    public void uploadFile(String path, File f);
+    public String uploadFile(String path, byte[] f);
 
     public File getFileForArticle(String articleTitle, String author, String name);
 

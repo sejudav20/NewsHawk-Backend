@@ -22,7 +22,7 @@ import java.util.*;
 @Repository("ContentDao")
 public class AWSContentDAO implements ContentDAO {
     public DynamoDbClient getDynamo() {
-        return new AWSInitializer().getClient();
+        return  AWSInitializer.getClient();
     }
 
     public void createTable(DynamoDbTable d) {
