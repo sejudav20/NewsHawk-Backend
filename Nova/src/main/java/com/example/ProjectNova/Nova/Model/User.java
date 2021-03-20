@@ -2,6 +2,7 @@ package com.example.ProjectNova.Nova.Model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbBean;
+import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbImmutable;
 import software.amazon.awssdk.enhanced.dynamodb.mapper.annotations.DynamoDbPartitionKey;
 
 import java.util.Date;
@@ -101,7 +102,6 @@ public class User implements Cloneable {
     public long getTimeStamp() {
         return timeStamp;
     }
-
     public void setTimeStamp(long timeStamp) {
         this.timeStamp = timeStamp;
     }

@@ -29,6 +29,7 @@ public class Article {
     private int viewCount;
     private int liked;
     private long timestamp;
+    private boolean isPublished;
     private String iconId;
 
     public Article() {
@@ -39,7 +40,7 @@ public class Article {
             String thumbnailId, @JsonProperty("mainContent") String mainContent, @JsonProperty("sources") String sources,
                    @JsonProperty("info") Map<String, List<String>> info, @JsonProperty("comments") List<String> comments,
                    @JsonProperty("viewCount") int viewCount, @JsonProperty("liked") int liked, @JsonProperty("timeStamp") long timestamp,
-                   @JsonProperty("channelIcon") String iconId) {
+                   @JsonProperty("channelIcon") String iconId, @JsonProperty("isPublished") boolean isPublished) {
         //this.id = id!=null?id:this.id;
         this.author = author != null ? author : this.author;
         this.thumbnailId = thumbnailId != null ? thumbnailId : this.thumbnailId;
@@ -52,6 +53,7 @@ public class Article {
         this.liked = liked != 0 ? liked : this.liked;
         this.timestamp = timestamp != 0 ? timestamp : this.timestamp;
         this.iconId = iconId != null ? iconId : this.iconId;
+        this.isPublished = isPublished;
     }
 
     public void merge(Article article) {
@@ -165,5 +167,13 @@ public class Article {
 
     public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public boolean isPublished() {
+        return isPublished;
+    }
+
+    public void setPublished(boolean published) {
+        isPublished = published;
     }
 }

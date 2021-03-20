@@ -60,7 +60,7 @@ public class AWSUserDAO implements UserDAO {
         try {
             u = uTable.getItem(key);
         } catch (DynamoDbException de) {
-            throw de;
+            return null;
         }
 
         return u;

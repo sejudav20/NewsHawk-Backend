@@ -43,6 +43,19 @@ public class MainController {
     public File getUserThumbnail(@PathVariable("name") String user) {
         return photoS.getProfileThumbnail(user);
     }
+    @GetMapping(path = "/setUserThumbnail/{name}")
+    public String setUserThumbnail(@PathVariable("name") String user,@RequestParam("Profile") MultipartFile thumbnail) {
+        try {
+            String url =photoS.setProfileThumbnail(user,thumbnail);
+            User u=userS.getUserbyName(user);
+            u.setProfilePic(url);
+            userS.updateUser(u);
+            return url;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 
     @DeleteMapping(path = "/deleteUser/{name}")
     public void deleteUser(@PathVariable("name") String name) {
@@ -136,23 +149,25 @@ public class MainController {
         return creatorS.getArticleByName(name, author);
     }
 
-    @PostMapping(path = "/addArticleImages/{author}/{name}")
-    public void addArticleImages(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("images") MultipartFile[] images) {
+    @GetMapping(path = "/addArticleImages/{author}/{name}")
+    public List<String> addArticleImages(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("images") MultipartFile[] images) {
         try {
-            photoS.addArticleImages(author, name, images);
+            return photoS.addArticleImages(author, name, images);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
 
     }
 
-    @PostMapping(path = "/setArticleThumbnail/{author}/{name}")
-    public void setArticleThumbnail(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("Thumbnail") MultipartFile thumbnail) {
+    @GetMapping(path = "/setArticleThumbnail/{author}/{name}")
+    public String setArticleThumbnail(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("Thumbnail") MultipartFile thumbnail) {
         try {
-            photoS.addArticleThumbnail(author, name, thumbnail);
+           return photoS.addArticleThumbnail(author, name, thumbnail);
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @GetMapping(path = "/getArticleThumbnail/{author}/{name}")
