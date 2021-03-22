@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin(origins = {"http://localhost:8080"}, allowedHeaders = "*")
 @RequestMapping("/api/v1/nova")
 @RestController
 public class MainController {
