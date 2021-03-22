@@ -76,10 +76,12 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        User newUser = new User(name, password, id, null,
+        String hashedPassword = Encryptor.Encrypt(password);
+        User newUser = new User(name, hashedPassword, id, null,
                 new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
         UserContent u = new UserContent(name, new ArrayList<String>(), 0, 0, IdService.getId(), new ArrayList<String>(), 0, 0);
         uDao.createUserContent(u);
+
         cDao.createReadList(name, new ReadList(name, "Liked", new ArrayList<String>(), new ArrayList<String>()));
         cDao.createReadList(name, new ReadList(name, "History", new ArrayList<String>(), new ArrayList<String>()));
         cDao.createReadList(name, new ReadList(name, "Read Later", new ArrayList<String>(), new ArrayList<String>()));
@@ -99,7 +101,8 @@ public class UserService {
     }
 
     public User authenticateUser(String userId, String password) throws AuthenticationException, CreationException {
-        if (uDao.getPassword(userId).equals(password)) {
+        String hashed_password= Encryptor.Encrypt(password);
+        if (uDao.getPassword(userId).equals(hashed_password)) {
             User e = getUserbyName(userId);
             e.setPassword(null);
             return e;
