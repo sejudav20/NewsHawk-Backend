@@ -145,6 +145,30 @@ public class AWSContentDAO implements ContentDAO {
     }
 
     @Override
+    public List<Article> getArticles(List<String> articleNames, List<String> authors) throws ObjectDoesNotExistException {
+        DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
+        DynamoDbTable<Article> atable = eclient.table("Articles", TableSchema.fromBean(Article.class));
+
+        List<Article> articles=new ArrayList<Article>();
+
+        int index=0;
+        for(String articleName:articleNames){
+            Key key = Key.builder()
+                    .partitionValue(articleName)
+                    .sortValue(authors.get(index))
+                    .build();
+            Article a = atable.getItem(key);
+        if(a==null){
+
+        }else{
+            articles.add(a);
+        }
+        index++;
+        }
+        return articles;
+    }
+
+    @Override
     public ReadList getReadListById(String userId, String name) throws ObjectDoesNotExistException {
         DynamoDbEnhancedClient eclient = AWSInitializer.getEnhancedClient();
         DynamoDbTable<ReadList> atable = eclient.table("ReadLists", TableSchema.fromBean(ReadList.class));

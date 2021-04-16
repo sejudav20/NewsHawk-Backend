@@ -1,4 +1,4 @@
-package com.example.ProjectNova.Nova.API;
+package com.example.ProjectNova.Nova;
 
 import com.example.ProjectNova.Nova.Errors.*;
 import com.example.ProjectNova.Nova.Model.*;
@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin(origins = {"http://localhost:8080"}, allowedHeaders = "*")
 @RequestMapping("/api/v1/nova")
 @RestController
 public class MainController {
@@ -91,6 +90,7 @@ public class MainController {
     @GetMapping(path = "/getUser/{name}")
     public User getUser(@PathVariable("name") String name) throws UserDoesNotExistException {
         User u = null;
+        System.out.println("Went inside get User method");
         try {
             u = userS.getUserbyName(name);
             u.setPassword(null);
@@ -149,10 +149,15 @@ public class MainController {
         return creatorS.getArticleByName(name, author);
     }
 
-    @GetMapping(path = "/addArticleImages/{author}/{name}")
-    public List<String> addArticleImages(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("images") MultipartFile[] images) {
+    @GetMapping(path = "/getArticles/{names}/{authors}")
+    public List<Article> getArticles(@PathVariable("names") List<String> names, @PathVariable("authors") List<String> authors) throws CreationException, ObjectDoesNotExistException {
+        return creatorS.getArticles(names, authors);
+    }
+
+    @PostMapping(path = "/addArticleImages/{author}/{name}")
+    public List<String> addArticleImages(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("images") MultipartFile[] images, @RequestParam("paths") String[] paths) {
         try {
-            return photoS.addArticleImages(author, name, images);
+            return photoS.addArticleImages(author, name, images, paths);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -160,7 +165,7 @@ public class MainController {
 
     }
 
-    @GetMapping(path = "/setArticleThumbnail/{author}/{name}")
+    @PostMapping(path = "/setArticleThumbnail/{author}/{name}")
     public String setArticleThumbnail(@PathVariable("author") String author, @PathVariable("name") String name, @RequestParam("Thumbnail") MultipartFile thumbnail) {
         try {
            return photoS.addArticleThumbnail(author, name, thumbnail);
@@ -195,6 +200,7 @@ public class MainController {
 
     @GetMapping(path = "/getArticleComments/{articleId}")
     public List<Comment> getArticleComments(@PathVariable("articleId") String articleId) {
+        //article_id= articleName+" "+author
         return creatorS.getArticleComments(articleId);
     }
 
