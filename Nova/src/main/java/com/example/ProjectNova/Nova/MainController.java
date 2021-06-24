@@ -37,6 +37,10 @@ public class MainController {
     public User createUser(@RequestBody User user) throws CreationException, UsernameAlreadyExistException {
         return userS.createUser(user);
     }
+    @GetMapping(path="/")
+    public String getWelcome(){
+        return ("<h1>Hello and Welcome</h1>");
+    }
 
     @GetMapping(path = "/getUserThumbnail/{name}")
     public File getUserThumbnail(@PathVariable("name") String user) {

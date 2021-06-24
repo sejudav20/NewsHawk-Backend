@@ -110,6 +110,9 @@ public class UserService {
             throw new AuthenticationException();
         }
     }
+    public String getPassword(String userId){
+        return uDao.getPassword(userId);
+    }
 
     public void likeAnArticle(String username, String articleName, String author) {
         cDao.addLike(username, articleName, author);
