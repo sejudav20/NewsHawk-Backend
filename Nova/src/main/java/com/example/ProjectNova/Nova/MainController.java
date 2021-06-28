@@ -38,8 +38,8 @@ public class MainController {
         return userS.createUser(user);
     }
     @GetMapping(path="/")
-    public String getWelcome(){
-        return ("<h1>Hello and Welcome</h1>");
+    public boolean getLogIn(){
+        return true;
     }
 
     @GetMapping(path = "/getUserThumbnail/{name}")
