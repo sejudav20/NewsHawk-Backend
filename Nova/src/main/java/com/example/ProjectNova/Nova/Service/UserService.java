@@ -101,8 +101,8 @@ public class UserService {
     }
 
     public User authenticateUser(String userId, String password) throws AuthenticationException, CreationException {
-        String hashed_password= Encryptor.Encrypt(password);
-        if (uDao.getPassword(userId).equals(hashed_password)) {
+        //String hashed_password= Encryptor.Encrypt(password);
+        if (uDao.getPassword(userId).equals(password)) {
             User e = getUserbyName(userId);
             e.setPassword(null);
             return e;
