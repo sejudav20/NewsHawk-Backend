@@ -33,7 +33,7 @@ public class MainController {
     }
 
     //////User stuff/////////////////////////////////////////
-    @PostMapping(path = "/createUser")
+    @PostMapping(path = "/createUserw")
     public User createUser(@RequestBody User user) throws CreationException, UsernameAlreadyExistException {
         return userS.createUser(user);
     }
@@ -65,8 +65,8 @@ public class MainController {
         userS.deleteUser(name);
     }
 
-    @PostMapping(path = "/createUser/{name}/{password}")
-    public User createUser(@PathVariable("name") String name, @PathVariable("password") String password) throws UsernameAlreadyExistException, CreationException {
+    @PostMapping(path = "/createUser")
+    public User createUser(@RequestParam("name") String name, @RequestParam("password") String password) throws UsernameAlreadyExistException, CreationException {
         return userS.createUser(name, password);
     }
 

@@ -76,8 +76,8 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        String hashedPassword = Encryptor.Encrypt(password);
-        User newUser = new User(name, hashedPassword, id, null,
+        //String hashedPassword = Encryptor.Encrypt(password);
+        User newUser = new User(name, password, id, null,
                 new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
         UserContent u = new UserContent(name, new ArrayList<String>(), 0, 0, IdService.getId(), new ArrayList<String>(), 0, 0);
         uDao.createUserContent(u);
