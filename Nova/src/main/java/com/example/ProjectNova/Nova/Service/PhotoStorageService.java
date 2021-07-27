@@ -37,7 +37,7 @@ public class PhotoStorageService {
     }
 
     public File getProfileThumbnail(String author) {
-        return photoDAO.getFile("author/profile");
+        return photoDAO.getFile(author+"/profile");
     }
     public String setProfileThumbnail(String author, MultipartFile thumbnail) throws IOException {
         String ext1 = FilenameUtils.getExtension(thumbnail.getOriginalFilename());
@@ -52,18 +52,19 @@ public class PhotoStorageService {
 
     public String addArticleThumbnail(String author, String title, MultipartFile thumbnail) throws IOException {
 
-        String ext1 = FilenameUtils.getExtension(thumbnail.getOriginalFilename());
-        return uploadFile(author + "/" + title + "/Thumbnail."+ext1, thumbnail.getBytes());
+        return uploadFile(author + "/" + title + "/Thumbnail.jpg", thumbnail.getBytes());
     }
 
     public void deleteAllImagesForArticle(String author, String name) {
         photoDAO.deleteAllImagesFromPath(author + "/" + name);
     }
 
-    public List<String> addArticleImages(String author, String articleName, MultipartFile[] images) throws IOException {
+    public List<String> addArticleImages(String author, String articleName, MultipartFile[] images,String[] pathNames) throws IOException {
         List<String> fileLoc=new ArrayList<String>();
+        int index=0;
         for (MultipartFile m : images) {
-            fileLoc.add(uploadFile(author + "/" + articleName + "/" + m.getOriginalFilename(), m.getBytes()));
+            fileLoc.add(uploadFile(author + "/" + articleName + "/" + pathNames[index], m.getBytes()));
+            index++;
         }
         return fileLoc;
     }

@@ -46,6 +46,9 @@ public class CreatorService {
     public Article getArticleByName(String name, String author) throws ObjectDoesNotExistException {
         return cDao.getArticle(name, author);
     }
+    public List<Article> getArticles(List<String> names, List<String> authors) throws ObjectDoesNotExistException {
+        return cDao.getArticles(names, authors);
+    }
 
     public void deleteArticle(String name, String author) {
         cDao.deleteArticle(name, author);

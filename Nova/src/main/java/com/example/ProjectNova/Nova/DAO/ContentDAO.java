@@ -25,7 +25,8 @@ public interface ContentDAO {
     //Read
     public Article getArticle(String articleName, String author) throws ObjectDoesNotExistException;
 
-    ;
+    public List<Article> getArticles(List<String> articleName, List<String> author) throws ObjectDoesNotExistException;
+
 
     public ReadList getReadListById(String userId, String name) throws ObjectDoesNotExistException;
 

@@ -76,8 +76,8 @@ public class UserService {
         if (uDao.usernameExists(name)) {
             throw new UsernameAlreadyExistException();
         }
-        String hashedPassword = Encryptor.Encrypt(password);
-        User newUser = new User(name, hashedPassword, id, null,
+        //String hashedPassword = Encryptor.Encrypt(password);
+        User newUser = new User(name, password, id, null,
                 new ArrayList<String>(), new ArrayList<String>(), new ArrayList<String>(), IdService.getTimeStamp());
         UserContent u = new UserContent(name, new ArrayList<String>(), 0, 0, IdService.getId(), new ArrayList<String>(), 0, 0);
         uDao.createUserContent(u);
@@ -101,14 +101,17 @@ public class UserService {
     }
 
     public User authenticateUser(String userId, String password) throws AuthenticationException, CreationException {
-        String hashed_password= Encryptor.Encrypt(password);
-        if (uDao.getPassword(userId).equals(hashed_password)) {
+        //String hashed_password= Encryptor.Encrypt(password);
+        if (uDao.getPassword(userId).equals(password)) {
             User e = getUserbyName(userId);
             e.setPassword(null);
             return e;
         } else {
             throw new AuthenticationException();
         }
+    }
+    public String getPassword(String userId){
+        return uDao.getPassword(userId);
     }
 
     public void likeAnArticle(String username, String articleName, String author) {

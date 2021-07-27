@@ -34,7 +34,6 @@ public class AWSPhotoDAO implements PhotoDAO {
         return fileLoc;
 
     }
-
     public String pathify(String path) {
         return "https://" + bucketName + ".s3-us-west-2.amazonaws.com/" + path;
     }
